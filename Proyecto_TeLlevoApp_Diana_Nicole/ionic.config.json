@@ -1,0 +1,7 @@
+{
+  "name": "Proyecto_TeLlevoApp_Diana_Nicole",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
