@@ -18,7 +18,31 @@ const routes: Routes = [
   {
     path: 'reset-password',
     loadChildren: () => import('./reset-password/reset-password.module').then( m => m.ResetPasswordPageModule)
+  },  {
+    path: 'models',
+    loadChildren: () => import('./pages/models/models.module').then( m => m.ModelsPageModule)
   },
+  {
+    path: 'pages',
+    loadChildren: () => import('./pages/pages.module').then( m => m.PagesPageModule)
+  },
+  {
+    path: 'models',
+    loadChildren: () => import('./models/models.module').then( m => m.ModelsPageModule)
+  },
+  {
+    path: 'dfsf',
+    loadChildren: () => import('./dfsf/dfsf.module').then( m => m.DfsfPageModule)
+  },
+  {
+    path: 'index',
+    loadChildren: () => import('./pages/index/index.module').then( m => m.IndexPageModule)
+  },
+  {
+    path: 'profile',
+    loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
+  },
+
 ];
 
 @NgModule({
