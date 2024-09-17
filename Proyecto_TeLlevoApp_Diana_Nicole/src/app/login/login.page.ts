@@ -2,14 +2,15 @@ import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { LoginService } from '../services/login.service';
 import { ToastController } from '@ionic/angular';
-
+import { AfterViewInit } from '@angular/core';
+import { AnimationController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage {
+export class LoginPage implements AfterViewInit{
   usuario!: string;
   contrasena!: string;
 
@@ -18,7 +19,8 @@ export class LoginPage {
   constructor(
     private navCtrl: NavController,
     private loginService: LoginService,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private animationController: AnimationController
   ) {}
 
 
@@ -45,6 +47,23 @@ export class LoginPage {
       color: color
     });
     toast.present();
+  }
+
+  ngAfterViewInit(): void {
+    this.animacionLogo();
+  }
+
+  animacionLogo() {
+    const logoElement = document.querySelector('.logo');
+    if (logoElement) {
+      this.animationController
+        .create()
+        .addElement(logoElement)
+        .duration(1500)
+        .fromTo('transform', 'translateX(-100px)', 'translateX(0px)')
+        .fromTo('opacity', '0', '1')
+        .play();
+    }
   }
 
 }
