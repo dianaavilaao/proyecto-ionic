@@ -58,26 +58,47 @@ ion-item {
     --border-color: #dcdcdc; 
 }
 
+/* Estilo del logo */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 180px; 
+  margin-bottom: 30px; 
+}
+
 
 .logo {
-    font-family: 'Arial', sans-serif;
-    font-size: 24px;
-    font-weight: bold;
-    color: #3880ff; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .logo-icon {
-    font-size: 30px;
-    margin-right: 10px;
-    color: #0cd1e8; 
-  }
-  
- 
-  .logo-icon:hover {
-    transform: scale(1.2);
-    transition: transform 0.3s ease-in-out;
-  }
-  
+  display: flex;
+  align-items: center;
+  font-family: 'Arial', sans-serif;
+}
+
+
+.logo-icono {
+  font-size: 64px; 
+  color: #0cd1e8; 
+  margin-right: 15px;
+}
+
+
+.logo-texto {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+
+.logo-tellevo {
+  font-size: 48px;
+  font-weight: bold;
+  color: #3880ff; 
+}
+
+.logo-app {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ffce00; 
+  letter-spacing: 2px; 
+}
+
