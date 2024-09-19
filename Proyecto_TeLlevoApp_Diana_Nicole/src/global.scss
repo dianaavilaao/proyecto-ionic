@@ -35,3 +35,70 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+ion-toolbar {
+    --background: #ffffff; 
+    --color: #000000; 
+}
+
+ion-content {
+    --background: #ffffff !important; 
+    --color: #000000 !important; 
+}
+
+ion-input {
+    --background: #ffffff; 
+    --color: #000000; 
+    --placeholder-color: #a9a9a9; 
+}
+
+ion-item {
+    --background: #ffffff; 
+    --color: #000000; 
+    --border-color: #dcdcdc; 
+}
+
+/* Estilo del logo */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 180px; 
+  margin-bottom: 30px; 
+}
+
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-family: 'Arial', sans-serif;
+}
+
+
+.logo-icono {
+  font-size: 72px; 
+  color: #0cd1e8; 
+  margin-right: 15px;
+}
+
+
+.logo-texto {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+
+.logo-tellevo {
+  font-size: 58px;
+  font-weight: bold;
+  color: #3880ff; 
+}
+
+.logo-app {
+  font-size: 33px;
+  font-weight: bold;
+  color: #ffce00; 
+  letter-spacing: 2px; 
+}
+
