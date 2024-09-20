@@ -27,33 +27,33 @@ export class HomePage implements OnInit {
   ngAfterViewInit(): void {
     this.animacionCartas();
   }
-  
+
   animacionCartas() {
     const cardOfrece = document.querySelector('.card-ofrece') as HTMLElement;
     const cardBusca = document.querySelector('.card-busca') as HTMLElement;
-  
+
     if (cardOfrece && cardBusca) {
       cardOfrece.style.opacity = '0';
       cardBusca.style.opacity = '0';
-  
+
 
       this.animationController
         .create()
         .addElement(cardOfrece)
-        .duration(600)  
+        .duration(600)
         .fromTo('transform', 'translateX(-200px)', 'translateX(0px)') 
-        .fromTo('opacity', '0', '1')  
-        .easing('ease-out')  
+        .fromTo('opacity', '0', '1')
+        .easing('ease-out')
         .play()
         .then(() => {
-          
+
           this.animationController
             .create()
             .addElement(cardBusca)
-            .duration(600)  
-            .fromTo('transform', 'translateX(-200px)', 'translateX(0px)')  
-            .fromTo('opacity', '0', '1')  
-            .easing('ease-out')  
+            .duration(600)
+            .fromTo('transform', 'translateX(-200px)', 'translateX(0px)')
+            .fromTo('opacity', '0', '1')
+            .easing('ease-out')
             .play();
         });
     }
@@ -62,5 +62,5 @@ export class HomePage implements OnInit {
   volver() {
     this.navController.back();
   }
-  
+
 }
