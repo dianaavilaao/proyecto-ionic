@@ -1,29 +1,32 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Bienvenido, {{name}}!</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="volver()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Bienvenide {{name}}!</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <h1>
+  <h3>
     Elige tu modo:
-  </h1>
+  </h3>
 
-
-  <ion-card>
-    <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
+  <ion-card class="card-ofrece">
+    <img alt="Modo ofrece viajes" src="assets\images\modo-ofrece-viajes.png" />
     <ion-card-header>
       <ion-card-title>Ofrece viajes</ion-card-title>
     </ion-card-header>
-  
     <ion-card-content>
       Este modo te permitirá ofrecer viajes a otros estudiantes del Duoc y ganar dinero.
       <ion-button expand="block">Ir</ion-button>
     </ion-card-content>
   </ion-card>
 
-  <ion-card>
-    <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
+  <ion-card class="card-busca">
+    <img alt="Modo busca transporte" src="assets\images\modo-busca-transporte.png" />
     <ion-card-header>
       <ion-card-title>Busca transporte</ion-card-title>
     </ion-card-header>
@@ -33,6 +36,5 @@
       <ion-button expand="block">Ir</ion-button>
     </ion-card-content>
   </ion-card>
-
 
 </ion-content>

@@ -59,7 +59,7 @@ export class LoginPage implements AfterViewInit{
       this.animationController
         .create()
         .addElement(logoElement)
-        .duration(1500)
+        .duration(1000)
         .fromTo('transform', 'translateX(-100px)', 'translateX(0px)')
         .fromTo('opacity', '0', '1')
         .play();

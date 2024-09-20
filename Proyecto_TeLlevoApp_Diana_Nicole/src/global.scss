@@ -58,6 +58,27 @@ ion-item {
     --border-color: #dcdcdc; 
 }
 
+ion-card {
+  --background: #ffffff; 
+  --color: #000000; 
+}
+
+ion-card-header {
+  --background: transparent; 
+  --color: #000000; 
+}
+
+ion-card-title {
+  --color: #000000;
+}
+
+ion-card-content {
+  --background: transparent; 
+  --color: #000000; 
+
+}
+
+
 /* Estilo del logo */
 .logo-container {
   display: flex;
@@ -101,4 +122,3 @@ ion-item {
   color: #ffce00; 
   letter-spacing: 2px; 
 }
-

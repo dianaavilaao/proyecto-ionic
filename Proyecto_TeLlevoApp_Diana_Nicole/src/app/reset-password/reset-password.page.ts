@@ -15,7 +15,8 @@ export class ResetPasswordPage {
   constructor(
     private navCtrl: NavController,
     private toastController: ToastController,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private navController: NavController,
   ) {}
 
   verificarUsuario() {
@@ -51,5 +52,9 @@ export class ResetPasswordPage {
       color: color,
     });
     toast.present();
+  }
+
+  volver() {
+    this.navController.back();
   }
 }
