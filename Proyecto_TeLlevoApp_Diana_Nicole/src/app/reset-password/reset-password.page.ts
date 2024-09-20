@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, ToastController } from '@ionic/angular';
-import { LoginService } from '../../services/login.service';  // Ajusta el path si es necesario
+import { LoginService } from '../services/login.service';  // Ajusta el path si es necesario
 
 @Component({
   selector: 'app-reset-password',
