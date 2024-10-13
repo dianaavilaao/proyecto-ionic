@@ -66,4 +66,8 @@ export class LoginPage implements AfterViewInit{
     }
   }
 
+  goToRegister() {
+    this.navCtrl.navigateForward('/register');
+  }
+
 }
