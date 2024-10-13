@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="volver()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Ofrece transporte</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h3>
+    Tu vehículo:
+  </h3>
+
+  <ion-card >
+    <h3>Detalles del vehiculo</h3>
+    <ion-button expand="block">Agregar vehiculo</ion-button>
+  </ion-card>
+
+
+  <h3>
+    Detalles del servicio:
+  </h3>
+
+  <ion-card >
+
+    <ion-item>
+      <div style="width: 100%;  flex-direction: column;">
+        <div style="display: flex;  align-items: center; margin-bottom: 5px;">
+          <div>Minutos del anuncio:  </div>
+          <div>{{ selectedValue }}</div>
+        </div>
+        <ion-range min="5" max="60" step="5" [(ngModel)]="selectedValue" style="flex: 1;">
+        </ion-range>
+      </div>
+    </ion-item>
+    
+    
+    
+
+    <ion-item>
+      <ion-label>Selecciona una sede</ion-label>
+      <ion-select placeholder="Seleccione una sede">
+          <ion-select-option value="alameda">Sede Alameda</ion-select-option>
+          <ion-select-option value="padre-alonso">Sede Padre Alonso de Ovalle</ion-select-option>
+          <ion-select-option value="antonio-varas">Sede Antonio Varas</ion-select-option>
+          <ion-select-option value="educacion-continua">Sede Educación Continua</ion-select-option>
+          <ion-select-option value="maipu">Sede Maipú</ion-select-option>
+          <ion-select-option value="melipilla">Sede Melipilla</ion-select-option>
+          <ion-select-option value="plaza-norte">Sede Plaza Norte</ion-select-option>
+          <ion-select-option value="plaza-oeste">Sede Plaza Oeste</ion-select-option>
+          <ion-select-option value="vespucio">Sede Vespucio</ion-select-option>
+          <ion-select-option value="puente-alto">Sede Puente Alto</ion-select-option>
+          <ion-select-option value="san-bernardo">Sede San Bernardo</ion-select-option>
+          <ion-select-option value="san-carlos">Sede San Carlos de Apoquindo</ion-select-option>
+          <ion-select-option value="san-joaquin">Sede San Joaquín</ion-select-option>
+          <ion-select-option value="valparaiso">Sede Valparaíso</ion-select-option>
+          <ion-select-option value="vina-del-mar">Sede Viña del Mar</ion-select-option>
+          <ion-select-option value="arauco">Campus Arauco</ion-select-option>
+          <ion-select-option value="nacimiento">Campus Nacimiento</ion-select-option>
+          <ion-select-option value="san-andres">Sede San Andrés de Concepción</ion-select-option>
+          <ion-select-option value="villarrica">Campus Villarrica</ion-select-option>
+          <ion-select-option value="puerto-montt">Sede Puerto Montt</ion-select-option>
+      </ion-select>
+  </ion-item>
+  </ion-card>
+
+</ion-content>
