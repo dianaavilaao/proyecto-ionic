@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-search-services',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SearchServicesPage implements OnInit {
 
-  constructor() { }
+  constructor(
+    private navController: NavController,
+  ) { }
 
   ngOnInit() {
   }
 
+  volver() {
+    this.navController.back();
+  }
 }

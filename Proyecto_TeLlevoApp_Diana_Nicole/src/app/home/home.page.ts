@@ -67,4 +67,8 @@ export class HomePage implements OnInit {
   goToOfferServices(){
     this.navCtrl.navigateForward('/offer-services');
   }
+
+  goToSearchServices(){
+    this.navCtrl.navigateForward('/search-services');
+  }
 }
