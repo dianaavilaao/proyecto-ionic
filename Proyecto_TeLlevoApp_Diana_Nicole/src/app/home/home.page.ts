@@ -13,6 +13,7 @@ export class HomePage implements OnInit {
   name!: string;
 
   constructor(
+    private navCtrl: NavController,
     private route: ActivatedRoute,
     private animationController: AnimationController,
     private navController: NavController,
@@ -63,4 +64,11 @@ export class HomePage implements OnInit {
     this.navController.back();
   }
 
+  goToOfferServices(){
+    this.navCtrl.navigateForward('/offer-services');
+  }
+
+  goToSearchServices(){
+    this.navCtrl.navigateForward('/search-services');
+  }
 }

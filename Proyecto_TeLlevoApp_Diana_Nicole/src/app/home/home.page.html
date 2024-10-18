@@ -10,8 +10,8 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <h3>
-    Elige tu modo:
+  <h3 style="font-weight: bold;">
+    Elige tu modo
   </h3>
 
   <ion-card class="card-ofrece">
@@ -21,7 +21,7 @@
     </ion-card-header>
     <ion-card-content>
       Este modo te permitirá ofrecer viajes a otros estudiantes del Duoc y ganar dinero.
-      <ion-button expand="block">Ir</ion-button>
+      <ion-button expand="block" (click)="goToOfferServices()">Ir</ion-button>
     </ion-card-content>
   </ion-card>
 
@@ -33,7 +33,7 @@
   
     <ion-card-content>
       Este modo te permitirá buscar transporte proporcionado por otros estudiantes del Duoc.
-      <ion-button expand="block">Ir</ion-button>
+      <ion-button expand="block" (click)="goToSearchServices()">Ir</ion-button>
     </ion-card-content>
   </ion-card>
 

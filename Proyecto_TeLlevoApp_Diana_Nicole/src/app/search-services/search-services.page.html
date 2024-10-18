@@ -1,0 +1,76 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="volver()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Busca transporte</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>¿Donde te diriges?</ion-card-title>
+    </ion-card-header>
+    <ion-item>
+      <ion-label >Dirección</ion-label>
+      <ion-input placeholder="Ej. Calle Principal 123, Ciudad" name="direccion" required></ion-input>
+    </ion-item>
+    <ion-button expand="block">Aceptar</ion-button>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Conductores Disponibles</ion-card-title>
+    </ion-card-header>
+    
+    <ion-card-content class="ion-padding">
+      <ion-list>
+        
+        <ion-item>
+          <ion-label>
+            <h2>Conductor 1</h2>
+            <p>Sede: Sede Alameda</p>
+            <p>Distancia: 3 km</p>
+            <p>Capacidad: 2/4</p>
+            <p>Tiempo restante: 5 minutos</p>
+          </ion-label>
+          <ion-button slot="end">Tomar Viaje</ion-button>
+        </ion-item>
+  
+        
+        <ion-item>
+          <ion-label>
+            <h2>Conductor 2</h2>
+            <p>Sede: Sede Alameda</p>
+            <p>Distancia: 5 km</p>
+            <p>Capacidad: 2/4</p>
+            <p>Tiempo restante: 10 minutos</p>
+          </ion-label>
+          <ion-button slot="end">Tomar Viaje</ion-button>
+        </ion-item>
+  
+       
+        <ion-item>
+          <ion-label>
+            <h2>Conductor 3</h2>
+            <p>Sede: Sede Alameda</p>
+            <p>Distancia: 10 km</p>
+            <p>Capacidad: 2/4</p>
+            <p>Tiempo restante: 15 minutos</p>
+          </ion-label>
+          <ion-button slot="end">Tomar Viaje</ion-button>
+        </ion-item>
+
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  
+
+
+  
+
+</ion-content>

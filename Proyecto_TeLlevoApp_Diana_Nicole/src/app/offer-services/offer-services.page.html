@@ -1,0 +1,186 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="volver()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Ofrece transporte</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+    <ion-card > <!-- *ngIf="vehiculo" -->
+      <ion-card-header>
+        <ion-card-title>Vehículo registrado</ion-card-title>
+      </ion-card-header>
+    
+      <ion-card-content>
+        <ion-item>
+          <ion-label>Marca:</ion-label>
+          <ion-text>.</ion-text> <!-- {{ vehiculo.marca }}-->
+        </ion-item>
+    
+        <ion-item>
+          <ion-label>Modelo:</ion-label>
+          <ion-text>.</ion-text> <!-- {{ vehiculo.modelo }} -->
+        </ion-item>
+    
+        <ion-item>
+          <ion-label>Patente:</ion-label>
+          <ion-text>.</ion-text> <!-- {{ vehiculo.patente }} -->
+
+        </ion-item>
+    
+        <ion-item>
+          <ion-label>Color:</ion-label>
+          <ion-text>.</ion-text> <!-- {{ vehiculo.color }} -->
+
+        </ion-item>
+      </ion-card-content>
+      <ion-button id="open-edit-vehicle-modal" expand="block">Editar vehículo</ion-button>
+  <ion-modal trigger="open-edit-vehicle-modal">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="cancelEdit()">Cancelar</ion-button>
+          </ion-buttons>
+          <ion-title>Editar vehículo</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <form>  <!-- (ngSubmit)="submitEditVehicle()" -->
+          <ion-item>
+            <ion-label position="floating">Marca</ion-label>
+            <ion-input type="text" name="marca" required></ion-input> <!-- [(ngModel)]="vehiculo.marca" -->
+          </ion-item>
+      
+          <ion-item>
+            <ion-label position="floating">Modelo</ion-label>
+            <ion-input type="text" name="modelo" required></ion-input> <!-- [(ngModel)]="vehiculo.modelo" -->
+          </ion-item>
+      
+          <ion-item>
+            <ion-label position="floating">Patente</ion-label>
+            <ion-input type="text" name="patente" required></ion-input> <!-- [(ngModel)]="vehiculo.patente" -->
+          </ion-item>
+      
+          <ion-item>
+            <ion-label position="floating">Color</ion-label>
+            <ion-input type="text" name="color" required></ion-input> <!-- [(ngModel)]="vehiculo.color" -->
+          </ion-item>
+      
+          <ion-button expand="block" type="submit" (click)="confirmEditModal()">Guardar cambios</ion-button>
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+    </ion-card>
+    
+    <ion-card > <!-- *ngIf="!vehiculo" -->
+      <ion-card-header>
+        <ion-card-title>No tienes un vehículo registrado</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Por favor, registra tu vehículo para verlo aquí y ofrecer viajes.</p>
+      </ion-card-content>
+      <ion-button id="open-modal" expand="block">Agregar vehiculo</ion-button>
+    <ion-modal trigger="open-modal">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-buttons slot="start">
+              <ion-button (click)="cancel()">Cancelar</ion-button>
+            </ion-buttons>
+            <ion-title>Formulario vehiculo</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="confirm()" [strong]="true">Confirmar</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+          <form>  <!-- (ngSubmit)="addVehicle()" -->
+            <ion-item>
+              <ion-label position="floating">Marca</ion-label>
+              <ion-input type="text" name="marca" required></ion-input> <!-- [(ngModel)]="marca" -->
+            </ion-item>
+        
+            <ion-item>
+              <ion-label position="floating">Modelo</ion-label>
+              <ion-input type="text" name="modelo" required></ion-input> <!-- [(ngModel)]="modelo" -->
+            </ion-item>
+        
+            <ion-item>
+              <ion-label position="floating">Patente</ion-label>
+              <ion-input type="text" name="patente" required></ion-input> <!-- [(ngModel)]="patente" -->
+            </ion-item>
+        
+            <ion-item>
+              <ion-label position="floating">Color</ion-label>
+              <ion-input type="text" name="color" required></ion-input> <!-- [(ngModel)]="color" -->
+            </ion-item>
+        
+            <ion-button expand="block" type="submit">Agregar Vehículo</ion-button>
+        </form>
+        
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+    </ion-card>
+    
+    
+
+
+  <ion-card >
+    <ion-card-header>
+      <ion-card-title>Detalles del servicio</ion-card-title>
+    </ion-card-header>
+    <ion-item>
+      <div style="width: 100%;  flex-direction: column;">
+        <div style="display: flex;  align-items: center; margin-bottom: 5px;">
+          <div>Minutos del anuncio:  </div>
+          <div>{{ selectedValue }}</div>
+        </div>
+        <ion-range min="5" max="60" step="5" [(ngModel)]="selectedValue" style="flex: 1;">
+        </ion-range>
+      </div>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label>Selecciona una sede</ion-label>
+      <ion-select placeholder="Seleccione una sede">
+          <ion-select-option value="alameda">Sede Alameda</ion-select-option>
+          <ion-select-option value="padre-alonso">Sede Padre Alonso de Ovalle</ion-select-option>
+          <ion-select-option value="antonio-varas">Sede Antonio Varas</ion-select-option>
+          <ion-select-option value="educacion-continua">Sede Educación Continua</ion-select-option>
+          <ion-select-option value="maipu">Sede Maipú</ion-select-option>
+          <ion-select-option value="melipilla">Sede Melipilla</ion-select-option>
+          <ion-select-option value="plaza-norte">Sede Plaza Norte</ion-select-option>
+          <ion-select-option value="plaza-oeste">Sede Plaza Oeste</ion-select-option>
+          <ion-select-option value="vespucio">Sede Vespucio</ion-select-option>
+          <ion-select-option value="puente-alto">Sede Puente Alto</ion-select-option>
+          <ion-select-option value="san-bernardo">Sede San Bernardo</ion-select-option>
+          <ion-select-option value="san-carlos">Sede San Carlos de Apoquindo</ion-select-option>
+          <ion-select-option value="san-joaquin">Sede San Joaquín</ion-select-option>
+          <ion-select-option value="valparaiso">Sede Valparaíso</ion-select-option>
+          <ion-select-option value="vina-del-mar">Sede Viña del Mar</ion-select-option>
+          <ion-select-option value="arauco">Campus Arauco</ion-select-option>
+          <ion-select-option value="nacimiento">Campus Nacimiento</ion-select-option>
+          <ion-select-option value="san-andres">Sede San Andrés de Concepción</ion-select-option>
+          <ion-select-option value="villarrica">Campus Villarrica</ion-select-option>
+          <ion-select-option value="puerto-montt">Sede Puerto Montt</ion-select-option>
+      </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-input label="Distancia maxima en km: " placeholder="ej: 5 km "></ion-input>
+  </ion-item>
+
+  <ion-button expand="block">Aceptar</ion-button>
+  </ion-card>
+
+
+
+</ion-content>
