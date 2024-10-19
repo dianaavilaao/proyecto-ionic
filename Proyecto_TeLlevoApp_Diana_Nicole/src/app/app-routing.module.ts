@@ -30,6 +30,10 @@ const routes: Routes = [
     path: 'search-services',
     loadChildren: () => import('./search-services/search-services.module').then( m => m.SearchServicesPageModule)
   },
+  {
+    path: 'profile',
+    loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
+  },
 
 
 ];
