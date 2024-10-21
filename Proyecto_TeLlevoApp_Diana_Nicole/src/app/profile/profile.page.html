@@ -35,9 +35,9 @@
           <ion-header>
             <ion-toolbar>
               <ion-buttons slot="start">
-                <ion-button (click)="dismissEditModal() ">Cancelar</ion-button>
+                <ion-button >Cancelar</ion-button><!--(click)="dismissEditModal() "-->
               </ion-buttons>
-              <ion-title>Editar Datos del Usuario</ion-title>
+              <ion-title>Editar datos del usuario</ion-title>
             </ion-toolbar>
           </ion-header>
           <ion-content class="ion-padding">
@@ -57,7 +57,7 @@
                 <ion-input type="text" name="phone" required></ion-input><!--  [(ngModel)]="user.phone"-->
               </ion-item>
 
-              <ion-button expand="block" type="submit" (click)="confirmEditModal()">Guardar cambios</ion-button>
+              <ion-button expand="block" type="submit">Guardar cambios</ion-button> <!--(click)="confirmEditModal()-->
             </form>
           </ion-content>
         </ng-template>
@@ -67,7 +67,7 @@
 
   <ion-card>
     <ion-card-header>
-      <ion-card-title>Vehículos Registrados</ion-card-title>
+      <ion-card-title>Vehículos registrados</ion-card-title>
     </ion-card-header>
     
     <ion-card-content > <!-- *ngFor="let vehiculo of vehiculos"-->
@@ -77,19 +77,19 @@
       </ion-item>
     </ion-card-content>
     
-    <ion-button id="open-add-vehicle-modal" expand="block">Agregar Vehículo</ion-button>
+    <ion-button id="open-add-vehicle-modal" expand="block">Agregar vehículo</ion-button>
     <ion-modal trigger="open-add-vehicle-modal">
       <ng-template>
         <ion-header>
           <ion-toolbar>
             <ion-buttons slot="start">
-              <ion-button (click)="dismissAddVehicleModal()">Cancelar</ion-button>
+              <ion-button>Cancelar</ion-button> <!--(click)="dismissAgregarVehicleModal()"-->
             </ion-buttons>
-            <ion-title>Agregar Vehículo</ion-title>
+            <ion-title>Agregar vehículo</ion-title>
           </ion-toolbar>
         </ion-header>
         <ion-content class="ion-padding">
-          <form> <!-- (ngSubmit)="addVehicle()" -->
+          <form> <!-- (ngSubmit)="agregarVehicle()" -->
             <ion-item>
               <ion-label position="floating">Marca</ion-label>
               <ion-input type="text" name="marca" required></ion-input>
@@ -110,7 +110,7 @@
               <ion-input type="text" name="color" required></ion-input>
             </ion-item>
 
-            <ion-button expand="block" type="submit">Agregar Vehículo</ion-button>
+            <ion-button expand="block" type="submit">Agregar vehículo</ion-button>
           </form>
         </ion-content>
       </ng-template>
