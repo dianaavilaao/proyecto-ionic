@@ -19,24 +19,26 @@ export class ResetPasswordPage {
     private navController: NavController,
   ) {}
 
-  verificarUsuario() {
-    const usuarioEncontrado = this.loginService.buscarUsuario(this.usuario);
+  // Función para verificar si el usuario existe
+  async verificarUsuario() {
+    const usuarioEncontrado = await this.loginService.buscarUsuario(this.usuario); // Usamos await
 
     if (usuarioEncontrado) {
       this.presentToast('Usuario encontrado. Ingresa una nueva contraseña.', 'success');
-      this.mostrarCampoContrasena = true;  
+      this.mostrarCampoContrasena = true;  // Mostrar campo de nueva contraseña
     } else {
       this.presentToast('Error: Usuario no encontrado', 'danger');
-      this.mostrarCampoContrasena = false;  
+      this.mostrarCampoContrasena = false;  // Ocultar campo de nueva contraseña
     }
   }
 
-  actualizarContrasena() {
+  // Función para actualizar la contraseña del usuario
+  async actualizarContrasena() {
     if (this.nuevaContrasena) {
-      const exito = this.loginService.actualizarContrasena(this.usuario, this.nuevaContrasena);
+      const exito = await this.loginService.actualizarContrasena(this.usuario, this.nuevaContrasena); // Usamos await
       if (exito) {
         this.presentToast('Contraseña actualizada con éxito', 'success');
-        this.navCtrl.navigateBack('/login');  
+        this.navCtrl.navigateBack('/login');  // Navegar de regreso a la página de login
       } else {
         this.presentToast('Error al actualizar la contraseña', 'danger');
       }
@@ -45,6 +47,7 @@ export class ResetPasswordPage {
     }
   }
 
+  // Mostrar mensajes de feedback con un Toast
   async presentToast(mensaje: string, color: string) {
     const toast = await this.toastController.create({
       message: mensaje,
@@ -54,6 +57,7 @@ export class ResetPasswordPage {
     toast.present();
   }
 
+  // Función para volver a la página anterior
   volver() {
     this.navController.back();
   }

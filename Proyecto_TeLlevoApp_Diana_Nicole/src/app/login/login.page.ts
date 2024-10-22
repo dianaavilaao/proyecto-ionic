@@ -4,6 +4,7 @@ import { Storage } from '@ionic/storage-angular';
 import { AfterViewInit } from '@angular/core';
 import { AnimationController } from '@ionic/angular';
 import { User } from '../models/user';
+import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,8 @@ export class LoginPage implements AfterViewInit {
     private navCtrl: NavController,
     private toastController: ToastController,
     private animationController: AnimationController,
-    private storage: Storage
+    private storage: Storage,
+    private loginService: LoginService
   ) {
     this.initStorage();
   }
@@ -28,39 +30,24 @@ export class LoginPage implements AfterViewInit {
     await this.storage.create();
   }
 
-  async login() {
-    // Verifica que los campos no estén vacíos
-    if (this.usuario && this.contrasena) {
-      // Recupera los usuarios guardados desde el almacenamiento
-      const usuariosGuardados: User[] = (await this.storage.get('usuarios')) || [];
+// login.ts
+async login() {
+  if (this.usuario && this.contrasena) {
+    // Utiliza el servicio de login para autenticar
+    const usuarioEncontrado = await this.loginService.autenticarUsuario(this.usuario, this.contrasena);
 
-      // Busca un usuario que coincida con el nombre de usuario o email y la contraseña
-      const usuarioEncontrado = usuariosGuardados.find(
-        u => (u.usuario === this.usuario || u.email === this.usuario) && u.contrasena === this.contrasena
-      );
-
-      if (usuarioEncontrado) {
-        // Usuario autenticado correctamente
-        await this.mostrarMensajeToast('Login exitoso', 'success');
-
-        // Puedes guardar el usuario autenticado en el almacenamiento si es necesario
-        await this.storage.set('usuarioAutenticado', usuarioEncontrado);
-
-        // Navega a la página principal
-        this.navCtrl.navigateForward('/home', { queryParams: { name: usuarioEncontrado.usuario } });
-      } else {
-        // Si no se encontró el usuario, muestra un mensaje de error
-        await this.mostrarMensajeToast('Login erróneo. Verifica tus credenciales.', 'danger');
-      }
+    if (usuarioEncontrado) {
+      await this.mostrarMensajeToast('Login exitoso', 'success');
+      await this.storage.set('usuarioAutenticado', usuarioEncontrado);
+      this.navCtrl.navigateForward('/home', { queryParams: { name: usuarioEncontrado.usuario } });
     } else {
-      // Muestra un mensaje de error si faltan campos
-      await this.mostrarMensajeToast('Por favor, completa todos los campos.', 'danger');
+      await this.mostrarMensajeToast('Login erróneo. Verifica tus credenciales.', 'danger');
     }
+  } else {
+    await this.mostrarMensajeToast('Por favor, completa todos los campos.', 'danger');
   }
+}
 
-  goToResetPassword() {
-    this.navCtrl.navigateForward('/reset-password');
-  }
 
   async mostrarMensajeToast(mensaje: string, color: string) {
     const toast = await this.toastController.create({
@@ -91,5 +78,9 @@ export class LoginPage implements AfterViewInit {
 
   goToRegister() {
     this.navCtrl.navigateForward('/register');
+  }
+
+  goToResetPassword() {
+    this.navCtrl.navigateForward('/reset-password');
   }
 }
