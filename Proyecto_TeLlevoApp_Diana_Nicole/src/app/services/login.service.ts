@@ -109,4 +109,15 @@ export class LoginService {
     // Guarda la lista actualizada en el almacenamiento
     await this.storage.set('users', users);
   }
+
+  async obtenerUsuarioAutenticado(): Promise<User | null> {
+    const usuarioAutenticado = await this.storage.get('usuarioAutenticado');
+    return usuarioAutenticado || null;
+  }
+
+  async actualizarUsuarioAutenticado(usuarioActualizado: User): Promise<void> {
+    await this.storage.set('usuarioAutenticado', usuarioActualizado);
+  }
+
+
 }
