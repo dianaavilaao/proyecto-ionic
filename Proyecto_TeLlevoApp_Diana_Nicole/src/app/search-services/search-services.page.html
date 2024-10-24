@@ -10,67 +10,65 @@
 </ion-header>
 
 <ion-content>
-
   <ion-card>
     <ion-card-header>
-      <ion-card-title>¿Donde te diriges?</ion-card-title>
+      <ion-card-title>¿En qué sede te encuentras?</ion-card-title>
     </ion-card-header>
     <ion-item>
-      <ion-label >Dirección</ion-label>
-      <ion-input placeholder="Ej. Calle Principal 123, Ciudad" name="direccion" required></ion-input>
+      <ion-label>Sede</ion-label>
+      <ion-select [(ngModel)]="sedeSeleccionada" placeholder="Selecciona una sede">
+        <ion-select-option value="alameda">Sede Alameda</ion-select-option>
+          <ion-select-option value="padre-alonso">Sede Padre Alonso de Ovalle</ion-select-option>
+          <ion-select-option value="antonio-varas">Sede Antonio Varas</ion-select-option>
+          <ion-select-option value="educacion-continua">Sede Educación Continua</ion-select-option>
+          <ion-select-option value="maipu">Sede Maipú</ion-select-option>
+          <ion-select-option value="melipilla">Sede Melipilla</ion-select-option>
+          <ion-select-option value="plaza-norte">Sede Plaza Norte</ion-select-option>
+          <ion-select-option value="plaza-oeste">Sede Plaza Oeste</ion-select-option>
+          <ion-select-option value="vespucio">Sede Vespucio</ion-select-option>
+          <ion-select-option value="puente-alto">Sede Puente Alto</ion-select-option>
+          <ion-select-option value="san-bernardo">Sede San Bernardo</ion-select-option>
+          <ion-select-option value="san-carlos">Sede San Carlos de Apoquindo</ion-select-option>
+          <ion-select-option value="san-joaquin">Sede San Joaquín</ion-select-option>
+          <ion-select-option value="valparaiso">Sede Valparaíso</ion-select-option>
+          <ion-select-option value="vina-del-mar">Sede Viña del Mar</ion-select-option>
+          <ion-select-option value="arauco">Campus Arauco</ion-select-option>
+          <ion-select-option value="nacimiento">Campus Nacimiento</ion-select-option>
+          <ion-select-option value="san-andres">Sede San Andrés de Concepción</ion-select-option>
+          <ion-select-option value="villarrica">Campus Villarrica</ion-select-option>
+          <ion-select-option value="puerto-montt">Sede Puerto Montt</ion-select-option>
+      </ion-select>
     </ion-item>
-    <ion-button expand="block">Aceptar</ion-button>
+    <ion-button expand="block" (click)="aceptarSede()">Aceptar</ion-button>
   </ion-card>
 
-  <ion-card>
+  <ion-card *ngIf="serviciosFiltrados.length > 0">
     <ion-card-header>
       <ion-card-title>Conductores Disponibles</ion-card-title>
     </ion-card-header>
-    
+
     <ion-card-content class="ion-padding">
       <ion-list>
-        
-        <ion-item>
+        <ion-item *ngFor="let servicio of serviciosFiltrados">
           <ion-label>
-            <h2>Conductor 1</h2>
-            <p>Sede: Sede Alameda</p>
-            <p>Distancia: 3 km</p>
-            <p>Capacidad: 2/4</p>
-            <p>Tiempo restante: 5 minutos</p>
+            <h2>{{ servicio.conductor.usuario }}</h2>
+            <p>Sede: {{ servicio.sede }}</p>
+            <p>Vehículo: {{ servicio.vehiculo.marca }} {{ servicio.vehiculo.modelo }}</p>
+            <p>Tiempo restante: {{ servicio.tiempoRestante | number:'1.0-0' }} minutos</p>
+            <p>Distancia máxima: {{ servicio.distanciaMaxima }} km</p>
           </ion-label>
-          <ion-button slot="end">Tomar Viaje</ion-button>
+          <ion-button slot="end" (click)="tomarViaje(servicio)">Tomar Viaje</ion-button>
         </ion-item>
-  
-        
-        <ion-item>
-          <ion-label>
-            <h2>Conductor 2</h2>
-            <p>Sede: Sede Alameda</p>
-            <p>Distancia: 5 km</p>
-            <p>Capacidad: 2/4</p>
-            <p>Tiempo restante: 10 minutos</p>
-          </ion-label>
-          <ion-button slot="end">Tomar Viaje</ion-button>
-        </ion-item>
-  
-       
-        <ion-item>
-          <ion-label>
-            <h2>Conductor 3</h2>
-            <p>Sede: Sede Alameda</p>
-            <p>Distancia: 10 km</p>
-            <p>Capacidad: 2/4</p>
-            <p>Tiempo restante: 15 minutos</p>
-          </ion-label>
-          <ion-button slot="end">Tomar Viaje</ion-button>
-        </ion-item>
-
       </ion-list>
     </ion-card-content>
   </ion-card>
-  
 
-
-  
-
+  <ion-card *ngIf="serviciosFiltrados.length === 0">
+    <ion-card-header>
+      <ion-card-title>No hay conductores disponibles</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Actualmente no hay servicios disponibles en la sede seleccionada.</p>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

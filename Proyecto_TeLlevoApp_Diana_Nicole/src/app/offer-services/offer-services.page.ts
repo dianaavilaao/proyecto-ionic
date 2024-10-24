@@ -1,11 +1,10 @@
-import { Component, NgModule, OnInit, ViewChild } from '@angular/core';
-import { ModalController, NavController } from '@ionic/angular';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ModalController, NavController, ToastController } from '@ionic/angular';
 import { IonModal } from '@ionic/angular';
 import { User } from '../models/user';
 import { Vehiculo } from '../models/vehiculo';
+import { Service } from '../models/servicio';
 import { LoginService } from '../services/login.service';
-
 
 @Component({
   selector: 'app-offer-services',
@@ -20,20 +19,15 @@ export class OfferServicesPage implements OnInit {
   sedeSeleccionada: string = '';
   distanciaMaxima: number = 0;
   editingVehicle: Vehiculo = new Vehiculo('', '', '', '');
-  nuevoVehiculo: Vehiculo = {
-    marca: '',
-    modelo: '',
-    patente: '',
-    color: ''
-  };
+  nuevoVehiculo: Vehiculo = new Vehiculo('', '', '', '');
 
   @ViewChild(IonModal) modal!: IonModal;
-  name!: string;
 
   constructor(
     private navController: NavController,
     private loginService: LoginService,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private toastController: ToastController
   ) {}
 
   async ngOnInit() {
@@ -46,42 +40,25 @@ export class OfferServicesPage implements OnInit {
     }
   }
 
-
   volver() {
     this.navController.back();
   }
 
-  //cancel() {
-   // this.modal.dismiss(null, 'cancel');
-    //this.navController.navigateBack('/offer-services'); 
-  //}
-  // Funciones para el modal
+  // Función para cancelar la edición o adición de un vehículo
   cancel() {
-    // Limpiar el formulario
-    this.nuevoVehiculo = {
-      marca: '',
-      modelo: '',
-      patente: '',
-      color: ''
-    };
+    this.nuevoVehiculo = new Vehiculo('', '', '', '');
     return this.modalController.dismiss(null, 'cancel');
   }
 
-  //confirm() {
-    //this.modal.dismiss(this.name, 'confirm');
-    //this.navController.navigateBack('/offer-services'); 
-  //}
-
+  // Función para confirmar la adición de un vehículo nuevo
   async confirm() {
-    // Validar que todos los campos estén completos
     if (!this.nuevoVehiculo.marca || !this.nuevoVehiculo.modelo || 
         !this.nuevoVehiculo.patente || !this.nuevoVehiculo.color) {
-      // Aquí podrías mostrar un mensaje de error
+      console.log('Complete todos los campos del vehículo');
       return;
     }
 
     if (this.usuario) {
-      // Crear nuevo vehículo
       const vehiculo = new Vehiculo(
         this.nuevoVehiculo.marca,
         this.nuevoVehiculo.modelo,
@@ -89,22 +66,11 @@ export class OfferServicesPage implements OnInit {
         this.nuevoVehiculo.color
       );
 
-      // Guardar el vehículo
       await this.loginService.guardarVehiculo(this.usuario.usuario, vehiculo);
-      
-      // Actualizar el vehículo en la vista
       this.vehiculo = vehiculo;
-      
-      // Limpiar el formulario
-      this.nuevoVehiculo = {
-        marca: '',
-        modelo: '',
-        patente: '',
-        color: ''
-      };
-
-      // Cerrar el modal
+      this.nuevoVehiculo = new Vehiculo('', '', '', '');
       await this.modalController.dismiss(vehiculo, 'confirm');
+      await this.ngOnInit();
     }
   }
 
@@ -132,7 +98,6 @@ export class OfferServicesPage implements OnInit {
       await this.loginService.guardarVehiculo(this.usuario.usuario, vehiculo);
       this.vehiculo = vehiculo;
       this.cancel();
-      // Recargar datos
       await this.ngOnInit();
     }
   }
@@ -142,14 +107,44 @@ export class OfferServicesPage implements OnInit {
       await this.loginService.guardarVehiculo(this.usuario.usuario, vehiculo);
       this.vehiculo = vehiculo;
       this.cancelEdit();
-      // Recargar datos
       await this.ngOnInit();
     }
   }
 
+  // Función para crear un servicio de transporte
+  async crearServicio() {
+    if (!this.usuario || !this.vehiculo) {
+      this.mostrarToast('Debe estar autenticado y tener un vehículo registrado', 'danger');
+      return;
+    }
 
+    try {
+      const nuevoServicio = new Service(
+        Date.now(), // ID único
+        this.usuario, // Usuario conductor
+        this.vehiculo, // Vehículo
+        this.sedeSeleccionada,
+        this.selectedValue,
+        this.distanciaMaxima
+      );
 
+      await this.loginService.guardarServicio(nuevoServicio);
+      this.mostrarToast('Servicio creado, ahora tu publicación es visible', 'success');
+      this.navController.navigateForward('/search-services');
+    } catch (error) {
+      this.mostrarToast('Error al crear el servicio', 'danger');
+      console.error('Error al crear el servicio:', error);
+    }
+  }
 
+  // Función para mostrar un mensaje de Toast
+  async mostrarToast(mensaje: string, color: string) {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: 3000,
+      position: 'bottom',
+      color: color
+    });
+    toast.present();
+  }
 }
-
-
