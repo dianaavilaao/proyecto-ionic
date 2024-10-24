@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-    <ion-card > <!-- *ngIf="vehiculo" -->
+    <ion-card *ngIf="vehiculo"> 
       <ion-card-header>
         <ion-card-title>Vehículo registrado</ion-card-title>
       </ion-card-header>
@@ -18,24 +18,19 @@
       <ion-card-content>
         <ion-item>
           <ion-label>Marca:</ion-label>
-          <ion-text>.</ion-text> <!-- {{ vehiculo.marca }}-->
+          <ion-text>{{ vehiculo.marca }}</ion-text>
         </ion-item>
-    
         <ion-item>
           <ion-label>Modelo:</ion-label>
-          <ion-text>.</ion-text> <!-- {{ vehiculo.modelo }} -->
+          <ion-text>{{ vehiculo.modelo }}</ion-text>
         </ion-item>
-    
         <ion-item>
           <ion-label>Patente:</ion-label>
-          <ion-text>.</ion-text> <!-- {{ vehiculo.patente }} -->
-
+          <ion-text>{{ vehiculo.patente }}</ion-text>
         </ion-item>
-    
         <ion-item>
           <ion-label>Color:</ion-label>
-          <ion-text>.</ion-text> <!-- {{ vehiculo.color }} -->
-
+          <ion-text>{{ vehiculo.color }}</ion-text>
         </ion-item>
       </ion-card-content>
       <ion-button id="open-edit-vehicle-modal" expand="block">Editar vehículo</ion-button>
@@ -79,7 +74,7 @@
 
     </ion-card>
     
-    <ion-card > <!-- *ngIf="!vehiculo" -->
+    <ion-card *ngIf="!vehiculo" > 
       <ion-card-header>
         <ion-card-title>No tienes un vehículo registrado</ion-card-title>
       </ion-card-header>
@@ -87,47 +82,65 @@
         <p>Por favor, registra tu vehículo para verlo aquí y ofrecer viajes.</p>
       </ion-card-content>
       <ion-button id="open-modal" expand="block">Agregar vehiculo</ion-button>
-    <ion-modal trigger="open-modal">
-      <ng-template>
-        <ion-header>
-          <ion-toolbar>
-            <ion-buttons slot="start">
-              <ion-button (click)="cancel()">Cancelar</ion-button>
-            </ion-buttons>
-            <ion-title>Formulario vehiculo</ion-title>
-            <ion-buttons slot="end">
-              <ion-button (click)="confirm()" [strong]="true">Confirmar</ion-button>
-            </ion-buttons>
-          </ion-toolbar>
-        </ion-header>
-        <ion-content class="ion-padding">
-          <form>  <!-- (ngSubmit)="addVehicle()" -->
-            <ion-item>
-              <ion-label position="floating">Marca</ion-label>
-              <ion-input type="text" name="marca" required></ion-input> <!-- [(ngModel)]="marca" -->
-            </ion-item>
-        
-            <ion-item>
-              <ion-label position="floating">Modelo</ion-label>
-              <ion-input type="text" name="modelo" required></ion-input> <!-- [(ngModel)]="modelo" -->
-            </ion-item>
-        
-            <ion-item>
-              <ion-label position="floating">Patente</ion-label>
-              <ion-input type="text" name="patente" required></ion-input> <!-- [(ngModel)]="patente" -->
-            </ion-item>
-        
-            <ion-item>
-              <ion-label position="floating">Color</ion-label>
-              <ion-input type="text" name="color" required></ion-input> <!-- [(ngModel)]="color" -->
-            </ion-item>
-        
-            <ion-button expand="block" type="submit">Agregar Vehículo</ion-button>
-        </form>
-        
-        </ion-content>
-      </ng-template>
-    </ion-modal>
+      <ion-modal trigger="open-modal">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-buttons slot="start">
+                <ion-button (click)="cancel()">Cancelar</ion-button>
+              </ion-buttons>
+              <ion-title>Formulario vehículo</ion-title>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="ion-padding">
+            <form (ngSubmit)="confirm()">
+              <ion-item>
+                <ion-label position="floating">Marca</ion-label>
+                <ion-input 
+                  type="text" 
+                  [(ngModel)]="nuevoVehiculo.marca" 
+                  name="marca" 
+                  required>
+                </ion-input>
+              </ion-item>
+          
+              <ion-item>
+                <ion-label position="floating">Modelo</ion-label>
+                <ion-input 
+                  type="text" 
+                  [(ngModel)]="nuevoVehiculo.modelo" 
+                  name="modelo" 
+                  required>
+                </ion-input>
+              </ion-item>
+          
+              <ion-item>
+                <ion-label position="floating">Patente</ion-label>
+                <ion-input 
+                  type="text" 
+                  [(ngModel)]="nuevoVehiculo.patente" 
+                  name="patente" 
+                  required>
+                </ion-input>
+              </ion-item>
+          
+              <ion-item>
+                <ion-label position="floating">Color</ion-label>
+                <ion-input 
+                  type="text" 
+                  [(ngModel)]="nuevoVehiculo.color" 
+                  name="color" 
+                  required>
+                </ion-input>
+              </ion-item>
+          
+              <ion-button expand="block" type="submit">Agregar Vehículo</ion-button>
+            </form>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
+
+
     </ion-card>
     
     

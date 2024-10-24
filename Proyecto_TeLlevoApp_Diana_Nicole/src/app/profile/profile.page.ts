@@ -15,6 +15,7 @@ export class ProfilePage implements OnInit {
   usuario: User | null = null;
   vehiculos: Vehiculo[] = []; // Lista de vehículos del usuario
   nuevoVehiculo: Vehiculo = new Vehiculo('', '', '', ''); // Vehículo nuevo para agregar
+  vehiculo: Vehiculo | null = null;
 
   constructor(
     private navCtrl: NavController,
@@ -23,8 +24,12 @@ export class ProfilePage implements OnInit {
     private loginService: LoginService
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.cargarDatosUsuario();
+    this.usuario = await this.loginService.obtenerUsuarioAutenticado();
+    if (this.usuario) {
+      this.vehiculo = await this.loginService.obtenerVehiculoUsuario(this.usuario.usuario);
+    }
   }
 
   // Cargar los datos del usuario autenticado
@@ -54,14 +59,22 @@ export class ProfilePage implements OnInit {
     this.navController.navigateBack('/profile');
   }
 
-  // Método para agregar un nuevo vehículo
   async agregarVehicle() {
     if (this.usuario) {
-      this.usuario.agregarVehiculo(this.nuevoVehiculo); // Agrega el vehículo al usuario
-      await this.loginService.actualizarUsuarioAutenticado(this.usuario);
-      this.nuevoVehiculo = new Vehiculo('', '', '', ''); // Reinicia el formulario
-      await this.cargarDatosUsuario(); // Recarga la lista de vehículos
-      this.modal.dismiss(null, 'confirm');
+      await this.loginService.guardarVehiculo(this.usuario.usuario, this.nuevoVehiculo);
+      this.vehiculo = this.nuevoVehiculo;
+      this.dismissAddVehicleModal();
+      // Recargar datos
+      await this.ngOnInit();
+    }
+  }
+
+  async deleteVehicle() {
+    if (this.usuario) {
+      await this.loginService.eliminarVehiculo(this.usuario.usuario);
+      this.vehiculo = null;
+      // Recargar datos
+      await this.ngOnInit();
     }
   }
 
@@ -70,12 +83,7 @@ export class ProfilePage implements OnInit {
     this.navController.navigateBack('/profile');
   }
 
-  // Método para eliminar un vehículo
-  async deleteVehicle(vehiculo: Vehiculo) {
-    if (this.usuario) {
-      this.usuario.vehiculos = this.usuario.vehiculos.filter(v => v !== vehiculo);
-      await this.loginService.actualizarUsuarioAutenticado(this.usuario);
-      await this.cargarDatosUsuario(); // Recarga la lista de vehículos
-    }
-  }
+
+  
+
 }

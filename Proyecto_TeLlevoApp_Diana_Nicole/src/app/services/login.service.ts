@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { User } from '../models/user';
+import { Vehiculo } from '../models/vehiculo';
 
 @Injectable({
   providedIn: 'root'
@@ -119,5 +120,57 @@ export class LoginService {
     await this.storage.set('usuarioAutenticado', usuarioActualizado);
   }
 
+
+
+
+
+
+  ///////////////////////
+  // Nueva función para obtener el vehículo del usuario actual
+  async obtenerVehiculoUsuario(usuario: string): Promise<Vehiculo | null> {
+    const user = await this.buscarUsuario(usuario);
+    if (user && user.vehiculos && user.vehiculos.length > 0) {
+      return user.vehiculos[0]; // Retorna el primer vehículo
+    }
+    return null;
+  }
+
+  // Nueva función para agregar o actualizar vehículo
+  async guardarVehiculo(usuario: string, vehiculo: Vehiculo): Promise<void> {
+    const storedUsers = await this.storage.get('users');
+    const users = storedUsers || [];
+    
+    const userIndex = users.findIndex((u: User) => u.usuario === usuario);
+    if (userIndex > -1) {
+      users[userIndex].vehiculos = [vehiculo]; // Reemplaza el vehículo existente
+      await this.storage.set('users', users);
+      
+      // Actualizar también el usuario autenticado
+      const usuarioAutenticado = await this.obtenerUsuarioAutenticado();
+      if (usuarioAutenticado && usuarioAutenticado.usuario === usuario) {
+        usuarioAutenticado.vehiculos = [vehiculo];
+        await this.actualizarUsuarioAutenticado(usuarioAutenticado);
+      }
+    }
+  }
+
+  // Nueva función para eliminar vehículo
+  async eliminarVehiculo(usuario: string): Promise<void> {
+    const storedUsers = await this.storage.get('users');
+    const users = storedUsers || [];
+    
+    const userIndex = users.findIndex((u: User) => u.usuario === usuario);
+    if (userIndex > -1) {
+      users[userIndex].vehiculos = [];
+      await this.storage.set('users', users);
+      
+      // Actualizar usuario autenticado
+      const usuarioAutenticado = await this.obtenerUsuarioAutenticado();
+      if (usuarioAutenticado && usuarioAutenticado.usuario === usuario) {
+        usuarioAutenticado.vehiculos = [];
+        await this.actualizarUsuarioAutenticado(usuarioAutenticado);
+      }
+    }
+  }
 
 }
