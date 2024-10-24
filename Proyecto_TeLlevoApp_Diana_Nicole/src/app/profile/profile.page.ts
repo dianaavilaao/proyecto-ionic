@@ -16,6 +16,7 @@ export class ProfilePage implements OnInit {
   vehiculos: Vehiculo[] = []; // Lista de vehículos del usuario
   nuevoVehiculo: Vehiculo = new Vehiculo('', '', '', ''); // Vehículo nuevo para agregar
   vehiculo: Vehiculo | null = null;
+  editingVehicle: Vehiculo = new Vehiculo('', '', '', '');
 
   constructor(
     private navCtrl: NavController,
@@ -29,6 +30,9 @@ export class ProfilePage implements OnInit {
     this.usuario = await this.loginService.obtenerUsuarioAutenticado();
     if (this.usuario) {
       this.vehiculo = await this.loginService.obtenerVehiculoUsuario(this.usuario.usuario);
+      if (this.vehiculo) {
+        this.editingVehicle = { ...this.vehiculo };
+      }
     }
   }
 
@@ -38,6 +42,7 @@ export class ProfilePage implements OnInit {
     if (this.usuario) {
       this.vehiculos = this.usuario.vehiculos; // Carga la lista de vehículos del usuario
     }
+    
   }
 
   volver() {
@@ -52,6 +57,7 @@ export class ProfilePage implements OnInit {
       await this.cargarDatosUsuario(); // Recarga los datos después de actualizar
       this.navController.navigateBack('/profile');
     }
+    
   }
 
   dismissEditModal() {
@@ -84,6 +90,19 @@ export class ProfilePage implements OnInit {
   }
 
 
-  
+  async editVehicle() {
+    if (this.usuario && this.editingVehicle) {
+      await this.loginService.editarVehiculo(this.usuario.usuario, this.editingVehicle);
+      this.vehiculo = this.editingVehicle;
+      this.dismissEditVehicleModal();
+      await this.ngOnInit();
+    }
+  }
+
+  dismissEditVehicleModal() {
+    this.modal.dismiss(null, 'cancel');
+  }
+
+
 
 }

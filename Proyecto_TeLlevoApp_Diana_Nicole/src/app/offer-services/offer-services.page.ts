@@ -19,7 +19,7 @@ export class OfferServicesPage implements OnInit {
   selectedValue: number = 5;
   sedeSeleccionada: string = '';
   distanciaMaxima: number = 0;
-
+  editingVehicle: Vehiculo = new Vehiculo('', '', '', '');
   nuevoVehiculo: Vehiculo = {
     marca: '',
     modelo: '',
@@ -40,10 +40,13 @@ export class OfferServicesPage implements OnInit {
     this.usuario = await this.loginService.obtenerUsuarioAutenticado();
     if (this.usuario) {
       this.vehiculo = await this.loginService.obtenerVehiculoUsuario(this.usuario.usuario);
+      if (this.vehiculo) {
+        this.editingVehicle = { ...this.vehiculo };
+      }
     }
   }
 
-  
+
   volver() {
     this.navController.back();
   }
@@ -115,9 +118,13 @@ export class OfferServicesPage implements OnInit {
     this.navController.navigateBack('/offer-services'); 
   }
 
-  confirmEditModal() {
-    this.modal.dismiss(this.vehiculo, 'confirm');
-    this.navController.navigateBack('/offer-services'); 
+  async confirmEditModal() {
+    if (this.usuario && this.editingVehicle) {
+      await this.loginService.editarVehiculo(this.usuario.usuario, this.editingVehicle);
+      this.vehiculo = this.editingVehicle;
+      this.dismissEditModal();
+      await this.ngOnInit();
+    }
   }
 
   async agregarVehiculo(vehiculo: Vehiculo) {
@@ -139,6 +146,8 @@ export class OfferServicesPage implements OnInit {
       await this.ngOnInit();
     }
   }
+
+
 
 
 }

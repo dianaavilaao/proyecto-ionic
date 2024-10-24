@@ -173,4 +173,22 @@ export class LoginService {
     }
   }
 
+  async editarVehiculo(usuario: string, vehiculo: Vehiculo): Promise<void> {
+    const storedUsers = await this.storage.get('users');
+    const users = storedUsers || [];
+    
+    const userIndex = users.findIndex((u: User) => u.usuario === usuario);
+    if (userIndex > -1) {
+      users[userIndex].vehiculos = [vehiculo];
+      await this.storage.set('users', users);
+      
+      // Actualizar usuario autenticado
+      const usuarioAutenticado = await this.obtenerUsuarioAutenticado();
+      if (usuarioAutenticado && usuarioAutenticado.usuario === usuario) {
+        usuarioAutenticado.vehiculos = [vehiculo];
+        await this.actualizarUsuarioAutenticado(usuarioAutenticado);
+      }
+    }
+  }
+
 }
