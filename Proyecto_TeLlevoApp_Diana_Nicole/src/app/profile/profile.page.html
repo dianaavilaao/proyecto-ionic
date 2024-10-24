@@ -91,45 +91,45 @@
         <ion-label>Color:</ion-label>
         <ion-text>{{ vehiculo.color }}</ion-text>
       </ion-item>
-      <ion-button color="danger" (click)="deleteVehicle()">Eliminar vehículo</ion-button>
+      <ion-button color="danger" expand="block" (click)="deleteVehicle()">Eliminar vehículo</ion-button>
       <ion-button id="open-edit-vehicle-modal" expand="block">Editar vehículo</ion-button>
-<ion-modal trigger="open-edit-vehicle-modal">
-  <ng-template>
-    <ion-header>
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-button (click)="dismissEditVehicleModal()">Cancelar</ion-button>
-        </ion-buttons>
-        <ion-title>Editar vehículo</ion-title>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content class="ion-padding">
-      <form (ngSubmit)="editVehicle()">
-        <ion-item>
-          <ion-label position="floating">Marca</ion-label>
-          <ion-input type="text" [(ngModel)]="editingVehicle.marca" name="marca" required></ion-input>
-        </ion-item>
-    
-        <ion-item>
-          <ion-label position="floating">Modelo</ion-label>
-          <ion-input type="text" [(ngModel)]="editingVehicle.modelo" name="modelo" required></ion-input>
-        </ion-item>
-    
-        <ion-item>
-          <ion-label position="floating">Patente</ion-label>
-          <ion-input type="text" [(ngModel)]="editingVehicle.patente" name="patente" required></ion-input>
-        </ion-item>
-    
-        <ion-item>
-          <ion-label position="floating">Color</ion-label>
-          <ion-input type="text" [(ngModel)]="editingVehicle.color" name="color" required></ion-input>
-        </ion-item>
-    
-        <ion-button expand="block" type="submit">Guardar cambios</ion-button>
-      </form>
-    </ion-content>
-  </ng-template>
-</ion-modal>
+      <ion-modal trigger="open-edit-vehicle-modal">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-buttons slot="start">
+                <ion-button (click)="dismissEditVehicleModal()">Cancelar</ion-button>
+              </ion-buttons>
+              <ion-title>Editar vehículo</ion-title>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="ion-padding">
+            <form (ngSubmit)="editVehicle()">
+              <ion-item>
+                <ion-label position="floating">Marca</ion-label>
+                <ion-input type="text" [(ngModel)]="editingVehicle.marca" name="marca" required></ion-input>
+              </ion-item>
+          
+              <ion-item>
+                <ion-label position="floating">Modelo</ion-label>
+                <ion-input type="text" [(ngModel)]="editingVehicle.modelo" name="modelo" required></ion-input>
+              </ion-item>
+          
+              <ion-item>
+                <ion-label position="floating">Patente</ion-label>
+                <ion-input type="text" [(ngModel)]="editingVehicle.patente" name="patente" required></ion-input>
+              </ion-item>
+          
+              <ion-item>
+                <ion-label position="floating">Color</ion-label>
+                <ion-input type="text" [(ngModel)]="editingVehicle.color" name="color" required></ion-input>
+              </ion-item>
+          
+              <ion-button expand="block" type="submit">Guardar cambios</ion-button>
+            </form>
+          </ion-content>
+            </ng-template>
+          </ion-modal>
     </ion-card-content>
   
     <ion-card-content *ngIf="!vehiculo">
