@@ -18,7 +18,8 @@ const routes: Routes = [
   {
     path: 'reset-password',
     loadChildren: () => import('./reset-password/reset-password.module').then( m => m.ResetPasswordPageModule)
-  },  {
+  },
+  {
     path: 'register',
     loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
   },
@@ -38,7 +39,11 @@ const routes: Routes = [
     path: 'selected-service',
     loadChildren: () => import('./selected-service/selected-service.module').then( m => m.SelectedServicePageModule)
   },
-
+  {
+    path: 'not-found',
+    loadChildren: () => import('./not-found/not-found.module').then( m => m.NotFoundPageModule)
+  },
+  { path: '**', redirectTo: 'not-found' }
 
 ];
 

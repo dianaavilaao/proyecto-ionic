@@ -122,17 +122,20 @@ export class SelectedServicePage implements AfterViewInit {
       if (status === google.maps.DirectionsStatus.OK) {
         this.directionsRenderer.setDirections(result);
 
-        // Calcular la distancia total en kilómetros y compararla con la distancia del servicio
+        // Calcular la distancia total en kilómetros
         this.distanciaRuta = result.routes[0].legs[0].distance.value / 1000;
         const distanciaMaxima = this.servicioSeleccionado?.distanciaMaxima || 0;
-        this.puedeAceptarViaje = this.distanciaRuta <= distanciaMaxima;
+        
+        // Comparación ajustada
+        this.puedeAceptarViaje = distanciaMaxima > 0 && this.distanciaRuta <= distanciaMaxima;
 
         this.mostrarToast(`Distancia hasta el destino: ${this.distanciaRuta.toFixed(2)} km`, 'success');
       } else {
         this.mostrarToast('No se pudo calcular la ruta', 'danger');
       }
     });
-  }
+}
+
 
   async mostrarToast(mensaje: string, color: string) {
     const toast = await this.toastController.create({
@@ -143,4 +146,17 @@ export class SelectedServicePage implements AfterViewInit {
     });
     toast.present();
   }
+
+  aceptarViaje() {
+    if (this.puedeAceptarViaje) {
+      // Lógica para aceptar el viaje, como enviar los datos del viaje a un backend
+      this.mostrarToast('¡Viaje aceptado exitosamente!', 'success');
+      
+      // Aquí puedes redirigir al usuario o realizar otras acciones, si es necesario
+      this.navController.navigateForward('/ruta-confirmada');
+    } else {
+      this.mostrarToast('No es posible aceptar el viaje. Verifica la distancia.', 'danger');
+    }
+  }
+  
 }
