@@ -39,12 +39,12 @@
           <ion-select-option value="puerto-montt">Sede Puerto Montt</ion-select-option>
       </ion-select>
     </ion-item>
-    <ion-button expand="block" (click)="aceptarSede()">Aceptar</ion-button>
+    <ion-button expand="block" (click)="aceptarSede()">Buscar</ion-button>
   </ion-card>
 
   <ion-card *ngIf="serviciosFiltrados.length > 0">
     <ion-card-header>
-      <ion-card-title>Conductores Disponibles</ion-card-title>
+      <ion-card-title>Conductores disponibles</ion-card-title>
     </ion-card-header>
 
     <ion-card-content class="ion-padding">
@@ -57,7 +57,7 @@
             <p>Tiempo restante: {{ servicio.tiempoRestante | number:'1.0-0' }} minutos</p>
             <p>Distancia máxima: {{ servicio.distanciaMaxima }} km</p>
           </ion-label>
-          <ion-button slot="end" (click)="tomarViaje(servicio)">Tomar Viaje</ion-button>
+          <ion-button slot="end" (click)="tomarViaje(servicio)">Tomar viaje</ion-button>
         </ion-item>
       </ion-list>
     </ion-card-content>

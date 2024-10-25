@@ -1,4 +1,3 @@
-// search-services.page.ts
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { LoginService } from '../services/login.service';
@@ -55,7 +54,8 @@ export class SearchServicesPage implements OnInit {
 
   // Tomar un viaje
   tomarViaje(servicio: Service) {
-    console.log('Viaje tomado:', servicio);
-    // Aquí puedes implementar la lógica adicional para tomar el viaje
+    this.navController.navigateForward(`/selected-service`, {
+      queryParams: { servicio: JSON.stringify(servicio) }
+    });
   }
 }

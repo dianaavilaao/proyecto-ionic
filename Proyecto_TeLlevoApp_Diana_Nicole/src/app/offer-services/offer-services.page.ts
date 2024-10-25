@@ -130,7 +130,6 @@ export class OfferServicesPage implements OnInit {
 
       await this.loginService.guardarServicio(nuevoServicio);
       this.mostrarToast('Servicio creado, ahora tu publicación es visible', 'success');
-      this.navController.navigateForward('/search-services');
     } catch (error) {
       this.mostrarToast('Error al crear el servicio', 'danger');
       console.error('Error al crear el servicio:', error);
