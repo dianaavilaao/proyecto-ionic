@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { LoginService } from '../app/services/login.service';
 
 const routes: Routes = [
   {
@@ -43,7 +44,14 @@ const routes: Routes = [
     path: 'not-found',
     loadChildren: () => import('./not-found/not-found.module').then( m => m.NotFoundPageModule)
   },
-  { path: '**', redirectTo: 'not-found' }
+  { path: '**', 
+    redirectTo: 'not-found' },
+  {
+    path: 'protected-route',
+    canActivate: [LoginService], 
+    loadChildren: () => import('./protected/protected.module').then(m => m.ProtectedPageModule)
+  },
+  
 
 ];
 
