@@ -1,4 +1,4 @@
-import { Component, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, AfterViewInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { NavController, ToastController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { Service } from '../models/servicio';
@@ -48,7 +48,8 @@ export class SelectedServicePage implements AfterViewInit {
   constructor(
     private navController: NavController,
     private toastController: ToastController,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef // inyectar el servicio de cambio de detección
   ) {}
 
   ngAfterViewInit() {
@@ -116,25 +117,27 @@ export class SelectedServicePage implements AfterViewInit {
       destination: destinoLatLng,
       travelMode: google.maps.TravelMode.DRIVING
     };
-
+  
     this.directionsService.route(request, (result: any, status: any) => {
       if (status === google.maps.DirectionsStatus.OK) {
         this.directionsRenderer.setDirections(result);
-
+  
         // Calcular la distancia total en kilómetros
         this.distanciaRuta = result.routes[0].legs[0].distance.value / 1000;
         const distanciaMaxima = this.servicioSeleccionado?.distanciaMaxima || 0;
         
         // Comparación ajustada
         this.puedeAceptarViaje = distanciaMaxima > 0 && this.distanciaRuta <= distanciaMaxima;
-
-        this.mostrarToast(`Distancia hasta el destino: ${this.distanciaRuta.toFixed(2)} km`, 'success');
+  
+        // Forzar la detección de cambios
+        this.cdr.detectChanges();
+  
+        this.mostrarToast(`Distancia hasta el destino: ${this.distanciaRuta.toFixed(2)} km`, 'medium');
       } else {
         this.mostrarToast('No se pudo calcular la ruta', 'danger');
       }
     });
-}
-
+  }
 
   async mostrarToast(mensaje: string, color: string) {
     const toast = await this.toastController.create({
@@ -150,11 +153,8 @@ export class SelectedServicePage implements AfterViewInit {
     const distanciaMaxima = this.servicioSeleccionado?.distanciaMaxima || 0;
 
     if (this.puedeAceptarViaje) {
-  
       this.mostrarToast('¡Viaje aceptado exitosamente!', 'success');
-      
     } else if (this.distanciaRuta > distanciaMaxima) {
-
       this.mostrarToast(
         `No puedes tomar este viaje. La distancia (${this.distanciaRuta.toFixed(2)} km) supera el límite permitido por el conductor.`,
         'danger'
@@ -163,6 +163,4 @@ export class SelectedServicePage implements AfterViewInit {
       this.mostrarToast('No es posible aceptar el viaje. Verifica la distancia.', 'danger');
     }
   }
-
-  
 }

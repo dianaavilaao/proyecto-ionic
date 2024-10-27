@@ -22,7 +22,12 @@
   <!-- Mapa donde se mostrará la ruta -->
   <div #map id="map" style="height: 50vh; margin-top: 10px;"></div>
 
-  <ion-button expand="block" [disabled]="!puedeAceptarViaje" (click)="aceptarViaje()">Aceptar viaje</ion-button>
-
-
+  <!-- Botón para aceptar el viaje -->
+  <ion-button 
+  expand="block" 
+  [disabled]="!puedeAceptarViaje" 
+  [color]="puedeAceptarViaje ? 'primary' : 'medium'" 
+  (click)="aceptarViaje()">
+  Aceptar viaje
+</ion-button>
 </ion-content>
