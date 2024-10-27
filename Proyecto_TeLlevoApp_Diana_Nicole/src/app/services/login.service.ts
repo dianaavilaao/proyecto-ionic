@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { User } from '../models/user';
 import { Vehiculo } from '../models/vehiculo';
+import { Service } from '../models/servicio';
 
 @Injectable({
   providedIn: 'root'
@@ -191,4 +192,21 @@ export class LoginService {
     }
   }
 
+  async guardarServicio(servicio: Service): Promise<void> {
+    const servicios = (await this.storage.get('servicios')) || [];
+    servicios.push(servicio);
+    await this.storage.set('servicios', servicios);
+  }
+
+  // Obtiene la lista de servicios
+  async obtenerServicios(): Promise<Service[]> {
+    return (await this.storage.get('servicios')) || [];
+  }
+
+  // Elimina un servicio por su ID
+  async eliminarServicio(id: number): Promise<void> {
+    const servicios = (await this.storage.get('servicios')) || [];
+    const serviciosActualizados = servicios.filter((servicio: Service) => servicio.id !== id);
+    await this.storage.set('servicios', serviciosActualizados);
+  }
 }

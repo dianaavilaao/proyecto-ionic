@@ -152,19 +152,21 @@
       <ion-card-title>Detalles del servicio</ion-card-title>
     </ion-card-header>
     <ion-item>
-      <div style="width: 100%;  flex-direction: column;">
-        <div style="display: flex;  align-items: center; margin-bottom: 5px;">
-          <div>Minutos del anuncio:  </div>
+      <div style="width: 100%; flex-direction: column;">
+        <div style="display: flex; align-items: center; margin-bottom: 5px;">
+          <div>Minutos del anuncio:</div>
           <div>{{ selectedValue }}</div>
         </div>
         <ion-range min="5" max="60" step="5" [(ngModel)]="selectedValue" style="flex: 1;">
+          <ion-label slot="start">5</ion-label>
+          <ion-label slot="end">60</ion-label>
         </ion-range>
       </div>
     </ion-item>
     
     <ion-item>
       <ion-label>Selecciona una sede</ion-label>
-      <ion-select placeholder="Seleccione una sede">
+      <ion-select [(ngModel)]="sedeSeleccionada" placeholder="Seleccione una sede">
           <ion-select-option value="alameda">Sede Alameda</ion-select-option>
           <ion-select-option value="padre-alonso">Sede Padre Alonso de Ovalle</ion-select-option>
           <ion-select-option value="antonio-varas">Sede Antonio Varas</ion-select-option>
@@ -189,10 +191,12 @@
   </ion-item>
 
   <ion-item>
-    <ion-input label="Distancia maxima en km: " placeholder="ej: 5 km "></ion-input>
+    <ion-label position="floating">Distancia máxima en km</ion-label>
+    <ion-input [(ngModel)]="distanciaMaxima" type="number" placeholder="Ej: 5"></ion-input>
   </ion-item>
 
-  <ion-button expand="block">Aceptar</ion-button>
+  <ion-button expand="block" (click)="crearServicio()">Aceptar</ion-button>
+  
   </ion-card>
 
 
