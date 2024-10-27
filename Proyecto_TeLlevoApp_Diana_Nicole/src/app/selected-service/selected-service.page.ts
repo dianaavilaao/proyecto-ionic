@@ -1,4 +1,3 @@
-// selected-service.page.ts
 import { Component, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
 import { NavController, ToastController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
@@ -148,15 +147,22 @@ export class SelectedServicePage implements AfterViewInit {
   }
 
   aceptarViaje() {
+    const distanciaMaxima = this.servicioSeleccionado?.distanciaMaxima || 0;
+
     if (this.puedeAceptarViaje) {
-      // Lógica para aceptar el viaje, como enviar los datos del viaje a un backend
+  
       this.mostrarToast('¡Viaje aceptado exitosamente!', 'success');
       
-      // Aquí puedes redirigir al usuario o realizar otras acciones, si es necesario
-      this.navController.navigateForward('/ruta-confirmada');
+    } else if (this.distanciaRuta > distanciaMaxima) {
+
+      this.mostrarToast(
+        `No puedes tomar este viaje. La distancia (${this.distanciaRuta.toFixed(2)} km) supera el límite permitido por el conductor.`,
+        'danger'
+      );
     } else {
       this.mostrarToast('No es posible aceptar el viaje. Verifica la distancia.', 'danger');
     }
   }
+
   
 }
