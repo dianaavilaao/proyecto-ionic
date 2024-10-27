@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { LoginService } from '../app/services/login.service';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    loadChildren: () => import('./home/home.module').then(m => m.HomePageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: '',
@@ -26,33 +28,36 @@ const routes: Routes = [
   },
   {
     path: 'offer-services',
-    loadChildren: () => import('./offer-services/offer-services.module').then( m => m.OfferServicesPageModule)
+    loadChildren: () => import('./offer-services/offer-services.module').then( m => m.OfferServicesPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'search-services',
-    loadChildren: () => import('./search-services/search-services.module').then( m => m.SearchServicesPageModule)
+    loadChildren: () => import('./search-services/search-services.module').then( m => m.SearchServicesPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'profile',
-    loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
+    loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'selected-service',
-    loadChildren: () => import('./selected-service/selected-service.module').then( m => m.SelectedServicePageModule)
+    loadChildren: () => import('./selected-service/selected-service.module').then( m => m.SelectedServicePageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'not-found',
     loadChildren: () => import('./not-found/not-found.module').then( m => m.NotFoundPageModule)
   },
-  { path: '**', 
-    redirectTo: 'not-found' },
   {
-    path: 'protected-route',
-    canActivate: [LoginService], 
-    loadChildren: () => import('./protected/protected.module').then(m => m.ProtectedPageModule)
+    path: 'protected',
+    loadChildren: () => import('./protected/protected.module').then(m => m.ProtectedModule)
   },
-  
-
+  { 
+    path: '**', 
+    redirectTo: 'not-found' 
+  },
 ];
 
 @NgModule({
