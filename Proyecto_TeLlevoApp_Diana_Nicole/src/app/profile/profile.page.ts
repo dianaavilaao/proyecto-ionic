@@ -62,7 +62,6 @@ export class ProfilePage implements OnInit {
 
   dismissEditModal() {
     this.modal.dismiss(null, 'cancel');
-    this.navController.navigateBack('/profile');
   }
 
   async agregarVehicle() {
