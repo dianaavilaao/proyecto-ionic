@@ -8,6 +8,8 @@ import { Service } from '../models/servicio';
   templateUrl: './search-services.page.html',
   styleUrls: ['./search-services.page.scss'],
 })
+
+
 export class SearchServicesPage implements OnInit {
   servicios: Service[] = []; // Lista de servicios disponibles
   serviciosFiltrados: any[] = []; // Lista de servicios filtrados con tiempo restante

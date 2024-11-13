@@ -56,6 +56,7 @@
             <p>Vehículo: {{ servicio.vehiculo.marca }} {{ servicio.vehiculo.modelo }}</p>
             <p>Tiempo restante: {{ servicio.tiempoRestante | number:'1.0-0' }} minutos</p>
             <p>Distancia máxima: {{ servicio.distanciaMaxima }} km</p>
+            <p>Capacidad disponible: {{ servicio.vehiculo.capacidad - servicio.vehiculo.asientosOcupados }}</p>
           </ion-label>
           <ion-button slot="end" (click)="tomarViaje(servicio)">Tomar viaje</ion-button>
         </ion-item>
