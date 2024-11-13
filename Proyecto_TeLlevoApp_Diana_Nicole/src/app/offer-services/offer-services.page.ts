@@ -18,8 +18,8 @@ export class OfferServicesPage implements OnInit {
   selectedValue: number = 5;
   sedeSeleccionada: string = '';
   distanciaMaxima: number = 0;
-  editingVehicle: Vehiculo = new Vehiculo('', '', '', '',4,0);
-  nuevoVehiculo: Vehiculo = new Vehiculo('', '', '', '',4,0);
+  editingVehicle: Vehiculo = new Vehiculo('', '', '', '', 4, 0);
+  nuevoVehiculo: Vehiculo = new Vehiculo('', '', '', '', 4, 0);
 
   @ViewChild(IonModal) modal!: IonModal;
 
@@ -54,19 +54,19 @@ export class OfferServicesPage implements OnInit {
   async confirm() {
     if (this.usuario) {
       const vehiculo = new Vehiculo(
-          this.nuevoVehiculo.marca,
-          this.nuevoVehiculo.modelo,
-          this.nuevoVehiculo.patente,
-          this.nuevoVehiculo.color,
-          4,
-          0
+        this.nuevoVehiculo.marca,
+        this.nuevoVehiculo.modelo,
+        this.nuevoVehiculo.patente,
+        this.nuevoVehiculo.color,
+        this.nuevoVehiculo.capacidadMaxima, // Aquí se utiliza la capacidad personalizada
+        0
       );
       await this.loginService.guardarVehiculo(this.usuario.usuario, vehiculo);
       this.vehiculo = vehiculo;
-      this.nuevoVehiculo = new Vehiculo('', '', '', '', 4,0); 
+      this.nuevoVehiculo = new Vehiculo('', '', '', '', 0, 0); 
       await this.modalController.dismiss(vehiculo, 'confirm');
       await this.ngOnInit();
-  }
+    }
   }
 
   cancelEdit() {
