@@ -18,8 +18,8 @@ export class OfferServicesPage implements OnInit {
   selectedValue: number = 5;
   sedeSeleccionada: string = '';
   distanciaMaxima: number = 0;
-  editingVehicle: Vehiculo = new Vehiculo('', '', '', '');
-  nuevoVehiculo: Vehiculo = new Vehiculo('', '', '', '');
+  editingVehicle: Vehiculo = new Vehiculo('', '', '', '', 4, 0);
+  nuevoVehiculo: Vehiculo = new Vehiculo('', '', '', '', 4, 0);
 
   @ViewChild(IonModal) modal!: IonModal;
 
@@ -34,9 +34,9 @@ export class OfferServicesPage implements OnInit {
     this.usuario = await this.loginService.obtenerUsuarioAutenticado();
     if (this.usuario) {
       this.vehiculo = await this.loginService.obtenerVehiculoUsuario(this.usuario.usuario);
-      if (this.vehiculo) {
-        this.editingVehicle = { ...this.vehiculo };
-      }
+      //if (this.vehiculo) {
+       //this.editingVehicle = { ...this.vehiculo };
+      //}
     }
   }
 
@@ -46,29 +46,24 @@ export class OfferServicesPage implements OnInit {
 
   // Función para cancelar la edición o adición de un vehículo
   cancel() {
-    this.nuevoVehiculo = new Vehiculo('', '', '', '');
+    this.nuevoVehiculo = new Vehiculo('', '', '', '',4,0);
     return this.modalController.dismiss(null, 'cancel');
   }
 
   // Función para confirmar la adición de un vehículo nuevo
   async confirm() {
-    if (!this.nuevoVehiculo.marca || !this.nuevoVehiculo.modelo || 
-        !this.nuevoVehiculo.patente || !this.nuevoVehiculo.color) {
-      console.log('Complete todos los campos del vehículo');
-      return;
-    }
-
     if (this.usuario) {
       const vehiculo = new Vehiculo(
         this.nuevoVehiculo.marca,
         this.nuevoVehiculo.modelo,
         this.nuevoVehiculo.patente,
-        this.nuevoVehiculo.color
+        this.nuevoVehiculo.color,
+        this.nuevoVehiculo.capacidadMaxima, // Aquí se utiliza la capacidad personalizada
+        0
       );
-
       await this.loginService.guardarVehiculo(this.usuario.usuario, vehiculo);
       this.vehiculo = vehiculo;
-      this.nuevoVehiculo = new Vehiculo('', '', '', '');
+      this.nuevoVehiculo = new Vehiculo('', '', '', '', 0, 0); 
       await this.modalController.dismiss(vehiculo, 'confirm');
       await this.ngOnInit();
     }
@@ -146,4 +141,6 @@ export class OfferServicesPage implements OnInit {
     });
     toast.present();
   }
+
+
 }

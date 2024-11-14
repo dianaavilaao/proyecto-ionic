@@ -14,9 +14,9 @@ export class ProfilePage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal;
   usuario: User | null = null;
   vehiculos: Vehiculo[] = []; // Lista de vehículos del usuario
-  nuevoVehiculo: Vehiculo = new Vehiculo('', '', '', ''); // Vehículo nuevo para agregar
+  nuevoVehiculo: Vehiculo = new Vehiculo('', '', '', '',4,0); // Vehículo nuevo para agregar
   vehiculo: Vehiculo | null = null;
-  editingVehicle: Vehiculo = new Vehiculo('', '', '', '');
+  editingVehicle: Vehiculo = new Vehiculo('', '', '', '',4,0);
 
   constructor(
     private navCtrl: NavController,
@@ -30,9 +30,9 @@ export class ProfilePage implements OnInit {
     this.usuario = await this.loginService.obtenerUsuarioAutenticado();
     if (this.usuario) {
       this.vehiculo = await this.loginService.obtenerVehiculoUsuario(this.usuario.usuario);
-      if (this.vehiculo) {
-        this.editingVehicle = { ...this.vehiculo };
-      }
+      //if (this.vehiculo) {
+        //this.editingVehicle = { ...this.vehiculo };
+      //}
     }
   }
 

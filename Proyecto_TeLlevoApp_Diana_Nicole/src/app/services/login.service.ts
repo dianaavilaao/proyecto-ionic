@@ -209,4 +209,15 @@ export class LoginService {
     const serviciosActualizados = servicios.filter((servicio: Service) => servicio.id !== id);
     await this.storage.set('servicios', serviciosActualizados);
   }
+
+  async actualizarAsientosOcupados(usuario: string, asientosOcupados: number): Promise<void> {
+    const storedUsers = await this.storage.get('users');
+    const users = storedUsers || [];
+
+    const userIndex = users.findIndex((u: User) => u.usuario === usuario);
+    if (userIndex > -1 && users[userIndex].vehiculos.length > 0) {
+        users[userIndex].vehiculos[0].asientosOcupados = asientosOcupados;
+        await this.storage.set('users', users);
+    }
+}
 }
