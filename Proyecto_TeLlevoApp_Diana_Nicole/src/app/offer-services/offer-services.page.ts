@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ModalController, NavController, ToastController } from '@ionic/angular';
 import { IonModal } from '@ionic/angular';
 import { User } from '../models/user';
@@ -6,12 +6,17 @@ import { Vehiculo } from '../models/vehiculo';
 import { Service } from '../models/servicio';
 import { LoginService } from '../services/login.service';
 
+interface ServicioExtendido extends Service {
+  tiempoRestante: number;
+  capacidadDisponible: number;
+}
+
 @Component({
   selector: 'app-offer-services',
   templateUrl: './offer-services.page.html',
   styleUrls: ['./offer-services.page.scss'],
 })
-export class OfferServicesPage implements OnInit {
+export class OfferServicesPage implements OnInit, OnDestroy {
 
   usuario: User | null = null;
   vehiculo: Vehiculo | null = null;
@@ -20,8 +25,12 @@ export class OfferServicesPage implements OnInit {
   distanciaMaxima: number = 0;
   editingVehicle: Vehiculo = new Vehiculo('', '', '', '', 4, 0);
   nuevoVehiculo: Vehiculo = new Vehiculo('', '', '', '', 4, 0);
+  servicios: Service[] = []; // Lista de servicios
+  serviciosFiltrados: ServicioExtendido[] = []; // Lista de servicios filtrados con tiempo restante y capacidad disponible
 
   @ViewChild(IonModal) modal!: IonModal;
+  servicio: Service | null = null;
+  intervalId: any;
 
   constructor(
     private navController: NavController,
@@ -34,10 +43,41 @@ export class OfferServicesPage implements OnInit {
     this.usuario = await this.loginService.obtenerUsuarioAutenticado();
     if (this.usuario) {
       this.vehiculo = await this.loginService.obtenerVehiculoUsuario(this.usuario.usuario);
-      //if (this.vehiculo) {
-       //this.editingVehicle = { ...this.vehiculo };
-      //}
+      this.servicios = await this.loginService.obtenerServicios(); // Obtiene la lista de servicios
+      this.filtrarServicios(); // Filtra los servicios al iniciar
+      this.intervalId = setInterval(() => this.filtrarServicios(), 60000); // Verifica cada minuto
     }
+  }
+
+  ngOnDestroy() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+  }
+
+  filtrarServicios() {
+    const ahora = Date.now();
+
+    this.serviciosFiltrados = this.servicios
+      .map(servicio => {
+        // Calcular el tiempo restante en minutos
+        const tiempoRestante = servicio.minutosAnuncio - ((ahora - servicio.id) / 60000);
+        
+        // Asegurar que capacidad y asientos ocupados están definidos y son números
+        const capacidadMaxima = servicio.vehiculo.capacidadMaxima || 0;
+        const asientosOcupados = servicio.pasajeros.length || 0;
+        const capacidadDisponible = Math.max(capacidadMaxima - asientosOcupados, 0); // Evitar valores negativos
+
+        return {
+          ...servicio,
+          tiempoRestante: tiempoRestante > 0 ? tiempoRestante : 0, // Si el tiempo restante es negativo, mostrar 0
+          capacidadDisponible // Asegurar que no sea negativo
+        } as ServicioExtendido;
+      })
+      .filter(servicio => servicio.tiempoRestante > 0); // Mostrar solo los servicios con tiempo restante positivo
+
+    // Para verificar, muestra en consola los servicios filtrados y sus capacidades
+    console.log("Servicios filtrados:", this.serviciosFiltrados);
   }
 
   volver() {
@@ -46,7 +86,7 @@ export class OfferServicesPage implements OnInit {
 
   // Función para cancelar la edición o adición de un vehículo
   cancel() {
-    this.nuevoVehiculo = new Vehiculo('', '', '', '',4,0);
+    this.nuevoVehiculo = new Vehiculo('', '', '', '', 4, 0);
     return this.modalController.dismiss(null, 'cancel');
   }
 
@@ -112,19 +152,24 @@ export class OfferServicesPage implements OnInit {
       this.mostrarToast('Debe estar autenticado y tener un vehículo registrado', 'danger');
       return;
     }
-
+  
     try {
       const nuevoServicio = new Service(
-        Date.now(), // ID único
-        this.usuario, // Usuario conductor
-        this.vehiculo, // Vehículo
+        Date.now(),
+        this.usuario,
+        this.vehiculo,
         this.sedeSeleccionada,
         this.selectedValue,
-        this.distanciaMaxima
+        this.distanciaMaxima,
+        [],
+        60 // Valor de minutosAnuncio
       );
-
+  
       await this.loginService.guardarServicio(nuevoServicio);
+      this.servicio = nuevoServicio; // Asigna el nuevo servicio a `servicio`
       this.mostrarToast('Servicio creado, ahora tu publicación es visible', 'success');
+      this.servicios = await this.loginService.obtenerServicios(); // Actualiza la lista de servicios
+      this.filtrarServicios(); // Filtra los servicios después de agregar uno nuevo
     } catch (error) {
       this.mostrarToast('Error al crear el servicio', 'danger');
       console.error('Error al crear el servicio:', error);
@@ -141,6 +186,4 @@ export class OfferServicesPage implements OnInit {
     });
     toast.present();
   }
-
-
 }

@@ -219,5 +219,22 @@ export class LoginService {
         users[userIndex].vehiculos[0].asientosOcupados = asientosOcupados;
         await this.storage.set('users', users);
     }
+
 }
+
+async actualizarServicio(servicioActualizado: Service): Promise<void> {
+  const servicios = (await this.storage.get('servicios')) || [];
+  const index = servicios.findIndex((servicio: Service) => servicio.id === servicioActualizado.id);
+  if (index > -1) {
+    servicios[index] = servicioActualizado;
+    await this.storage.set('servicios', servicios);
+  }
 }
+
+async obtenerServicioPorId(id: number): Promise<Service | null> {
+  const servicios = (await this.storage.get('servicios')) || [];
+  return servicios.find((servicio: Service) => servicio.id === id) || null;
+}
+
+}
+

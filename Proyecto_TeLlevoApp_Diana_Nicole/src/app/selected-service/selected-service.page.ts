@@ -2,6 +2,8 @@ import { Component, ElementRef, AfterViewInit, ViewChild, ChangeDetectorRef } fr
 import { NavController, ToastController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { Service } from '../models/servicio';
+import { LoginService } from '../services/login.service'; // Importa el servicio de login
+import { User } from '../models/user'; // Importa el modelo de usuario
 declare var google: any;
 
 @Component({
@@ -16,12 +18,11 @@ export class SelectedServicePage implements AfterViewInit {
   geocoder: any;
   directionsService: any;
   directionsRenderer: any;
-  sedeLatLng: { lat: number, lng: number } | null = null; // Coordenadas de la sede seleccionada
-  servicioSeleccionado: Service | null = null; // Servicio seleccionado
-  distanciaRuta: number = 0; // Distancia calculada de la ruta en km
-  puedeAceptarViaje: boolean = false; // Controla el estado del botón "Aceptar viaje"
+  sedeLatLng: { lat: number, lng: number } | null = null;
+  servicioSeleccionado: Service | null = null;
+  distanciaRuta: number = 0;
+  puedeAceptarViaje: boolean = false;
 
-  // Mapa de sedes con sus coordenadas reales
   sedesCoordenadas: { [key: string]: { lat: number; lng: number } } = {
     'alameda': { lat: -33.448811744328104, lng: -70.67000634086763 },
     'padre-alonso': { lat: -33.44682566206291, lng: -70.65790159815451 },
@@ -49,7 +50,8 @@ export class SelectedServicePage implements AfterViewInit {
     private navController: NavController,
     private toastController: ToastController,
     private route: ActivatedRoute,
-    private cdr: ChangeDetectorRef // inyectar el servicio de cambio de detección
+    private cdr: ChangeDetectorRef,
+    private loginService: LoginService // Inyecta el servicio de login
   ) {}
 
   ngAfterViewInit() {
@@ -57,8 +59,6 @@ export class SelectedServicePage implements AfterViewInit {
     this.route.queryParams.subscribe(params => {
       if (params['servicio']) {
         this.servicioSeleccionado = JSON.parse(params['servicio']);
-        
-        // Configura las coordenadas de la sede automáticamente
         const sede = this.servicioSeleccionado?.sede;
         if (sede && this.sedesCoordenadas[sede]) {
           this.sedeLatLng = this.sedesCoordenadas[sede];
@@ -100,7 +100,6 @@ export class SelectedServicePage implements AfterViewInit {
       return;
     }
 
-    // Geocodificación para verificar la dirección
     this.geocoder.geocode({ address: this.direccionDestino }, (results: any, status: any) => {
       if (status === google.maps.GeocoderStatus.OK) {
         const destinoLatLng = results[0].geometry.location;
@@ -117,21 +116,14 @@ export class SelectedServicePage implements AfterViewInit {
       destination: destinoLatLng,
       travelMode: google.maps.TravelMode.DRIVING
     };
-  
+
     this.directionsService.route(request, (result: any, status: any) => {
       if (status === google.maps.DirectionsStatus.OK) {
         this.directionsRenderer.setDirections(result);
-  
-        // Calcular la distancia total en kilómetros
         this.distanciaRuta = result.routes[0].legs[0].distance.value / 1000;
         const distanciaMaxima = this.servicioSeleccionado?.distanciaMaxima || 0;
-        
-        // Comparación ajustada
         this.puedeAceptarViaje = distanciaMaxima > 0 && this.distanciaRuta <= distanciaMaxima;
-  
-        // Forzar la detección de cambios
         this.cdr.detectChanges();
-  
         this.mostrarToast(`Distancia hasta el destino: ${this.distanciaRuta.toFixed(2)} km`, 'medium');
       } else {
         this.mostrarToast('No se pudo calcular la ruta', 'danger');
@@ -149,14 +141,19 @@ export class SelectedServicePage implements AfterViewInit {
     toast.present();
   }
 
-  aceptarViaje() {
-    const distanciaMaxima = this.servicioSeleccionado?.distanciaMaxima || 0;
-
-    if (this.puedeAceptarViaje) {
-      this.mostrarToast('¡Viaje aceptado exitosamente!', 'success');
-    } else if (this.distanciaRuta > distanciaMaxima) {
+  async aceptarViaje() {
+    if (this.puedeAceptarViaje && this.servicioSeleccionado) {
+      const usuarioAutenticado = await this.loginService.obtenerUsuarioAutenticado();
+      if (usuarioAutenticado) {
+        this.servicioSeleccionado.agregarPasajero(usuarioAutenticado);
+        await this.loginService.actualizarServicio(this.servicioSeleccionado); // Actualiza el servicio
+        this.mostrarToast('¡Viaje aceptado exitosamente!', 'success');
+      } else {
+        this.mostrarToast('No se pudo obtener el usuario autenticado', 'danger');
+      }
+    } else if (this.distanciaRuta > (this.servicioSeleccionado?.distanciaMaxima || 0)) {
       this.mostrarToast(
-        `No puedes tomar este viaje. La distancia (${this.distanciaRuta.toFixed(2)} km) supera el límite permitido por el conductor.`,
+        `No puedes tomar este viaje. La distancia (${this.distanciaRuta.toFixed(2)} km) supera el límite permitido.`,
         'danger'
       );
     } else {
