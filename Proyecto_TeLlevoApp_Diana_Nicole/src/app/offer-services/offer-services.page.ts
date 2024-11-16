@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalController, NavController, ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';
 import { IonModal } from '@ionic/angular';
 import { User } from '../models/user';
 import { Vehiculo } from '../models/vehiculo';
@@ -27,7 +28,8 @@ export class OfferServicesPage implements OnInit {
     private navController: NavController,
     private loginService: LoginService,
     private modalController: ModalController,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private router: Router
   ) {}
 
   async ngOnInit() {
@@ -142,5 +144,9 @@ export class OfferServicesPage implements OnInit {
     toast.present();
   }
 
+  goToServiceStatus() {
+    this.router.navigate(['/service-status']);
+  }
+    
 
 }

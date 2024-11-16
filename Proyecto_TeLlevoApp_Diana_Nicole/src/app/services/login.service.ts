@@ -63,7 +63,7 @@ export class LoginService {
   // Busca un usuario en storage
   async buscarUsuario(usuario: string): Promise<User | undefined> {
     const storedUsers = await this.storage.get('users');
-    console.log('Usuarios almacenados:', storedUsers);  // <-- Verifica qué usuarios están almacenados
+    console.log('Usuarios almacenados:', storedUsers);  
     const users = storedUsers || [];
   
     return users.find((user: User) => user.usuario.toLowerCase() === usuario.toLowerCase());
@@ -210,7 +210,7 @@ export class LoginService {
     await this.storage.set('servicios', serviciosActualizados);
   }
 
-  async actualizarAsientosOcupados(usuario: string, asientosOcupados: number): Promise<void> {
+    async actualizarAsientosOcupados(usuario: string, asientosOcupados: number): Promise<void> {
     const storedUsers = await this.storage.get('users');
     const users = storedUsers || [];
 
@@ -220,4 +220,5 @@ export class LoginService {
         await this.storage.set('users', users);
     }
 }
+
 }

@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="volver()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Estado de servicios</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let servicio of serviciosUsuario">
+      <ion-label>
+        <h2>Sede: {{ servicio.sede }}</h2>
+        <p>Vehículo: {{ servicio.vehiculo.marca }} {{ servicio.vehiculo.modelo }}</p>
+        <p>Tiempo restante: {{ servicio.tiempoRestante | number:'1.0-0' }} minutos</p>
+        <p>Capacidad disponible: {{ servicio.capacidadDisponible }}</p>
+      </ion-label>
+    </ion-item>    
+  </ion-list>
+
+  <ion-text *ngIf="serviciosUsuario.length === 0">
+    <p>No tienes servicios activos.</p>
+  </ion-text>
+</ion-content>
