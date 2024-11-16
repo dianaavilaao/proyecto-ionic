@@ -2,6 +2,7 @@ import { Component, ElementRef, AfterViewInit, ViewChild, ChangeDetectorRef } fr
 import { NavController, ToastController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { Service } from '../models/servicio';
+import { LoginService } from '../services/login.service';
 declare var google: any;
 
 @Component({
@@ -49,7 +50,8 @@ export class SelectedServicePage implements AfterViewInit {
     private navController: NavController,
     private toastController: ToastController,
     private route: ActivatedRoute,
-    private cdr: ChangeDetectorRef // inyectar el servicio de cambio de detección
+    private cdr: ChangeDetectorRef, // inyectar el servicio de cambio de detección
+    private loginService: LoginService
   ) {}
 
   ngAfterViewInit() {
@@ -149,11 +151,28 @@ export class SelectedServicePage implements AfterViewInit {
     toast.present();
   }
 
-  aceptarViaje() {
-    const distanciaMaxima = this.servicioSeleccionado?.distanciaMaxima || 0;
-
+  async aceptarViaje() {
+    if (!this.servicioSeleccionado) {
+      this.mostrarToast('No se encontró el servicio seleccionado.', 'danger');
+      return;
+    }
+  
+    const distanciaMaxima = this.servicioSeleccionado.distanciaMaxima || 0;
+  
     if (this.puedeAceptarViaje) {
-      this.mostrarToast('¡Viaje aceptado exitosamente!', 'success');
+      // Reduce los asientos disponibles en el vehículo
+      const vehiculo = this.servicioSeleccionado.vehiculo;
+  
+      if (vehiculo.capacidadMaxima > vehiculo.asientosOcupados) {
+        vehiculo.asientosOcupados += 1;
+  
+        // Actualizar el servicio en el almacenamiento
+        await this.loginService.actualizarServicio(this.servicioSeleccionado);
+  
+        this.mostrarToast('¡Viaje aceptado exitosamente!', 'success');
+      } else {
+        this.mostrarToast('No hay asientos disponibles para este viaje.', 'danger');
+      }
     } else if (this.distanciaRuta > distanciaMaxima) {
       this.mostrarToast(
         `No puedes tomar este viaje. La distancia (${this.distanciaRuta.toFixed(2)} km) supera el límite permitido por el conductor.`,
@@ -163,4 +182,5 @@ export class SelectedServicePage implements AfterViewInit {
       this.mostrarToast('No es posible aceptar el viaje. Verifica la distancia.', 'danger');
     }
   }
+  
 }

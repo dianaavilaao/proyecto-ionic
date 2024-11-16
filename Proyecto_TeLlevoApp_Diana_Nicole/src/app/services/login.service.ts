@@ -221,4 +221,19 @@ export class LoginService {
     }
 }
 
+async actualizarServicio(servicioActualizado: Service): Promise<void> {
+  const servicios = (await this.storage.get('servicios')) || [];
+  
+  // Encuentra el índice del servicio en la lista
+  const index = servicios.findIndex((servicio: Service) => servicio.id === servicioActualizado.id);
+
+  if (index > -1) {
+    servicios[index] = servicioActualizado; // Actualiza el servicio en la lista
+    await this.storage.set('servicios', servicios); // Guarda los servicios actualizados en el almacenamiento
+  } else {
+    console.error('No se encontró el servicio para actualizar.');
+  }
+}
+
+
 }
