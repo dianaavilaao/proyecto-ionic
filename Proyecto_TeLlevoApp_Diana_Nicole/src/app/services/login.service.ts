@@ -203,6 +203,16 @@ export class LoginService {
     return (await this.storage.get('servicios')) || [];
   }
 
+  async obtenerServiciosListo(): Promise<Service[]> {
+    const servicios = (await this.storage.get('servicios')) || [];
+    return servicios.map((servicio: Service) => ({
+      ...servicio,
+      pasajeros: servicio.pasajeros || [] // Asegurar que pasajeros sea un arreglo
+    }));
+  }
+  
+  
+
   // Elimina un servicio por su ID
   async eliminarServicio(id: number): Promise<void> {
     const servicios = (await this.storage.get('servicios')) || [];
@@ -223,15 +233,14 @@ export class LoginService {
 
 async actualizarServicio(servicioActualizado: Service): Promise<void> {
   const servicios = (await this.storage.get('servicios')) || [];
-  
-  // Encuentra el índice del servicio en la lista
   const index = servicios.findIndex((servicio: Service) => servicio.id === servicioActualizado.id);
 
   if (index > -1) {
-    servicios[index] = servicioActualizado; // Actualiza el servicio en la lista
-    await this.storage.set('servicios', servicios); // Guarda los servicios actualizados en el almacenamiento
+    servicios[index] = servicioActualizado;
+    await this.storage.set('servicios', servicios);
+    console.log('Servicio actualizado en almacenamiento:', servicioActualizado);
   } else {
-    console.error('No se encontró el servicio para actualizar.');
+    console.error('Servicio no encontrado para actualizar:', servicioActualizado);
   }
 }
 

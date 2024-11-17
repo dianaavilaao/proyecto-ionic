@@ -12,13 +12,11 @@
 <ion-content>
   <ion-list>
     <ion-item *ngFor="let servicio of serviciosUsuario">
-      <ion-label>
         <h2>Sede: {{ servicio.sede }}</h2>
         <p>Vehículo: {{ servicio.vehiculo.marca }} {{ servicio.vehiculo.modelo }}</p>
-        <p>Tiempo restante: {{ servicio.tiempoRestante | number:'1.0-0' }} minutos</p>
         <p>Capacidad disponible: {{ servicio.capacidadDisponible }}</p>
-      </ion-label>
-    </ion-item>    
+        <p>Tiempo restante: {{ servicio.tiempoRestante | number:'1.0-0' }} minutos</p>
+      </ion-item>
   </ion-list>
 
   <ion-text *ngIf="serviciosUsuario.length === 0">

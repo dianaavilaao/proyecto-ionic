@@ -28,7 +28,6 @@ export class ServiceStatusPage implements OnInit {
   filtrarServiciosActivos() {
     const ahora = Date.now();
   
-    // Filtrar y calcular el tiempo restante para los servicios activos
     this.serviciosUsuario = this.servicios
       .filter(servicio => servicio.conductor.usuario === this.usuarioAutenticado.usuario)
       .map(servicio => {
@@ -40,11 +39,11 @@ export class ServiceStatusPage implements OnInit {
   
         return {
           ...servicio,
-          tiempoRestante: tiempoRestante > 0 ? tiempoRestante : 0,
+          tiempoRestante: tiempoRestante > 0 ? tiempoRestante : 0, // Mostrar 0 si el tiempo restante es negativo
           capacidadDisponible
         };
       })
-      .filter(servicio => servicio.tiempoRestante > 0); // Mostrar solo servicios activos
+      .filter(servicio => servicio.tiempoRestante > 0); // Mostrar solo servicios con tiempo restante positivo
   
     console.log('Servicios activos del usuario:', this.serviciosUsuario);
   }
@@ -67,6 +66,4 @@ export class ServiceStatusPage implements OnInit {
       console.error('Error al cargar servicios:', error);
     }
   }
-
-  
 }

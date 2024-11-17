@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AnimationController } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
+import { LoginService } from '../services/login.service';
+import { Service } from '../models/servicio';
 
 @Component({
   selector: 'app-home',
@@ -11,18 +13,36 @@ import { NavController } from '@ionic/angular';
 
 export class HomePage implements OnInit {
   name!: string;
+  viajeEnCurso: Service | null = null; // Viaje en curso asociado al usuario
 
   constructor(
     private navCtrl: NavController,
     private route: ActivatedRoute,
     private animationController: AnimationController,
-    private navController: NavController,
+    private loginService: LoginService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.route.queryParams.subscribe(params => {
       this.name = params['name'];
     });
+  }
+  
+
+  volver() {
+    this.navCtrl.back();
+  }
+
+  goToOfferServices() {
+    this.navCtrl.navigateForward('/offer-services');
+  }
+
+  goToSearchServices() {
+    this.navCtrl.navigateForward('/search-services');
+  }
+
+  goToProfile() {
+    this.navCtrl.navigateForward('/profile');
   }
 
   ngAfterViewInit(): void {
@@ -37,17 +57,15 @@ export class HomePage implements OnInit {
       cardOfrece.style.opacity = '0';
       cardBusca.style.opacity = '0';
 
-
       this.animationController
         .create()
         .addElement(cardOfrece)
         .duration(600)
-        .fromTo('transform', 'translateX(-200px)', 'translateX(0px)') 
+        .fromTo('transform', 'translateX(-200px)', 'translateX(0px)')
         .fromTo('opacity', '0', '1')
         .easing('ease-out')
         .play()
         .then(() => {
-
           this.animationController
             .create()
             .addElement(cardBusca)
@@ -58,22 +76,6 @@ export class HomePage implements OnInit {
             .play();
         });
     }
-  }
-
-  volver() {
-    this.navController.back();
-  }
-
-  goToOfferServices(){
-    this.navCtrl.navigateForward('/offer-services');
-  }
-
-  goToSearchServices(){
-    this.navCtrl.navigateForward('/search-services');
-  }
-
-  goToProfile(){
-    this.navCtrl.navigateForward('/profile');
   }
   
 }
