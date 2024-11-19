@@ -25,28 +25,32 @@ export class ServiceStatusPage implements OnInit {
     this.navController.back();
   }
   
-  filtrarServiciosActivos() {
-    const ahora = Date.now();
-  
-    this.serviciosUsuario = this.servicios
-      .filter(servicio => servicio.conductor.usuario === this.usuarioAutenticado.usuario)
-      .map(servicio => {
-        const tiempoRestante = servicio.minutosAnuncio - ((ahora - servicio.id) / 60000);
-  
-        const capacidadMaxima = servicio.vehiculo.capacidadMaxima || 0;
-        const asientosOcupados = servicio.vehiculo.asientosOcupados || 0;
-        const capacidadDisponible = Math.max(capacidadMaxima - asientosOcupados, 0);
-  
-        return {
-          ...servicio,
-          tiempoRestante: tiempoRestante > 0 ? tiempoRestante : 0, // Mostrar 0 si el tiempo restante es negativo
-          capacidadDisponible
-        };
-      })
-      .filter(servicio => servicio.tiempoRestante > 0); // Mostrar solo servicios con tiempo restante positivo
-  
-    console.log('Servicios activos del usuario:', this.serviciosUsuario);
-  }
+ filtrarServiciosActivos() {
+  const ahora = Date.now();
+
+  this.serviciosUsuario = this.servicios
+    .filter(servicio => servicio.conductor.usuario === this.usuarioAutenticado.usuario)
+    .map(servicio => {
+      const tiempoRestante = servicio.minutosAnuncio - ((ahora - servicio.id) / 60000);
+      const capacidadMaxima = servicio.vehiculo.capacidadMaxima || 0;
+      const asientosOcupados = servicio.vehiculo.asientosOcupados || 0;
+
+      // Asegurar que pasajeros es un array válido
+      servicio.pasajeros = servicio.pasajeros || [];
+
+      // Calcular capacidad disponible y si todos los pasajeros aceptaron
+      const todosAceptaron = servicio.pasajeros.every(pasajero => pasajero.acepto);
+
+      return {
+        ...servicio,
+        tiempoRestante: Math.max(tiempoRestante, 0), // Asegurar que no sea negativo
+        capacidadMaxima,
+        asientosOcupados,
+        todosAceptaron, // Asigna a la nueva propiedad
+      };
+    })
+    .filter(servicio => servicio.tiempoRestante > 0); // Mostrar solo servicios activos
+}
   
   async cargarServiciosUsuario() {
     try {
@@ -66,4 +70,33 @@ export class ServiceStatusPage implements OnInit {
       console.error('Error al cargar servicios:', error);
     }
   }
+
+  iniciarViaje(servicio: Service) {
+    if (servicio.todosAceptaron) {
+      servicio.enCurso = true; // Marcar el servicio como en curso
+      this.loginService.actualizarServicio(servicio).then(() => {
+        console.log('El viaje ha comenzado.');
+        alert('El viaje ha sido iniciado exitosamente.');
+      }).catch(err => {
+        console.error('Error al iniciar el viaje:', err);
+      });
+    } else {
+      alert('No todos los pasajeros han aceptado el viaje.');
+    }
+  }
+  
+
+  aceptarViaje(servicio: Service, usuario: string) {
+    const pasajero = servicio.pasajeros.find(p => p.usuario === usuario);
+    if (pasajero) {
+      pasajero.acepto = true;
+      this.loginService.actualizarServicio(servicio).then(() => {
+        console.log(`${usuario} ha aceptado el viaje.`);
+      }).catch(err => {
+        console.error('Error al aceptar el viaje:', err);
+      });
+    }
+  }
+  
+  
 }

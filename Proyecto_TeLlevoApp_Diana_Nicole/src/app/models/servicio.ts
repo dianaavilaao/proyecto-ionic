@@ -1,5 +1,6 @@
 import { Vehiculo } from './vehiculo';
 import { User } from './user';
+import { Pasajero } from './pasajero';
 
 export class Service {
   id!: number;
@@ -10,12 +11,14 @@ export class Service {
   distanciaMaxima!: number;
 
   // Propiedades calculadas
-  tiempoRestante?: number; // Tiempo restante en minutos
-  capacidadDisponible?: number; // Capacidad disponible en el vehículo
+  tiempoRestante?: number;
+  capacidadDisponible?: number;
 
-  //ESTO DE ACA ES EXPERIMENTAL, HAY QUE VER SI SE VA A QUEDAR ASÍ O NO!!!
-  pasajeros: { usuario: string; listo: boolean }[] = []; // Asegurar que siempre es un array
-  enCurso: boolean = false; // Indica si el viaje está en curso
+  pasajeros: Pasajero[] = []; // Ahora es un array de objetos `Pasajero`
+  enCurso: boolean = false;
+
+  // Nuevo campo
+  todosAceptaron?: boolean;
 
   constructor(
     id: number,

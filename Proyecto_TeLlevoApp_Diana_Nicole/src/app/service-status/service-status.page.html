@@ -12,11 +12,26 @@
 <ion-content>
   <ion-list>
     <ion-item *ngFor="let servicio of serviciosUsuario">
+      <ion-label>
         <h2>Sede: {{ servicio.sede }}</h2>
         <p>Vehículo: {{ servicio.vehiculo.marca }} {{ servicio.vehiculo.modelo }}</p>
-        <p>Capacidad disponible: {{ servicio.capacidadDisponible }}</p>
+        <p>Capacidad ocupada: {{ servicio.vehiculo.asientosOcupados }} de {{ servicio.vehiculo.capacidadMaxima }}</p>
         <p>Tiempo restante: {{ servicio.tiempoRestante | number:'1.0-0' }} minutos</p>
-      </ion-item>
+        <p>Pasajeros:</p>
+        <ul>
+          <li *ngFor="let pasajero of servicio.pasajeros">
+            {{ pasajero.usuario }} - {{ pasajero.acepto ? 'Aceptó' : 'Pendiente' }}
+          </li>
+        </ul>
+      </ion-label>
+      <ion-button 
+        expand="block" 
+        color="success" 
+        *ngIf="servicio.todosAceptaron" 
+        (click)="iniciarViaje(servicio)">
+        Iniciar Viaje
+      </ion-button>
+    </ion-item>
   </ion-list>
 
   <ion-text *ngIf="serviciosUsuario.length === 0">
