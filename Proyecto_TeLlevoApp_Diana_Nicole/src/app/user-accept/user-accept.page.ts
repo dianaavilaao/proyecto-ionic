@@ -44,6 +44,8 @@ export class UserAcceptPage implements OnInit {
 
   async aceptarViaje(servicio: Service) {
     try {
+      console.log('Servicio seleccionado para aceptar:', servicio);
+  
       if (!this.usuarioAutenticado) {
         this.mostrarToast('Usuario no autenticado.', 'danger');
         return;
@@ -51,6 +53,8 @@ export class UserAcceptPage implements OnInit {
   
       // Verificar si hay capacidad disponible
       const capacidadDisponible = servicio.vehiculo.capacidadMaxima - servicio.vehiculo.asientosOcupados;
+      console.log(`Capacidad disponible: ${capacidadDisponible}`);
+  
       if (capacidadDisponible <= 0) {
         this.mostrarToast('No hay asientos disponibles en este viaje.', 'danger');
         return;
@@ -62,27 +66,26 @@ export class UserAcceptPage implements OnInit {
       );
   
       if (pasajeroExistente) {
+        console.log('El usuario ya es pasajero:', pasajeroExistente);
+  
         if (pasajeroExistente.acepto) {
           this.mostrarToast('Ya has aceptado este viaje.', 'warning');
         } else {
-          // Actualizar el estado de aceptación del pasajero existente
           pasajeroExistente.acepto = true;
-          servicio.vehiculo.ocuparAsiento(); // Incrementar asientos ocupados
-          await this.loginService.actualizarServicio(servicio);
-          this.mostrarToast('Has aceptado el viaje exitosamente.', 'success');
+          servicio.vehiculo.ocuparAsiento();
+          console.log('Estado del servicio después de aceptar (existente):', servicio);
         }
       } else {
-        // Crear nuevo pasajero
         const nuevoPasajero = new Pasajero(this.usuarioAutenticado.usuario, true);
         servicio.pasajeros.push(nuevoPasajero);
-        servicio.vehiculo.ocuparAsiento(); // Incrementar asientos ocupados
-  
-        // Actualizar el servicio
-        await this.loginService.actualizarServicio(servicio);
-        this.mostrarToast('Te has unido al viaje exitosamente.', 'success');
+        servicio.vehiculo.ocuparAsiento();
+        console.log('Estado del servicio después de aceptar (nuevo pasajero):', servicio);
       }
   
-      // Recargar la lista de servicios disponibles
+      await this.loginService.actualizarServicio(servicio);
+      console.log('Servicio actualizado exitosamente.');
+  
+      this.mostrarToast('Te has unido al viaje exitosamente.', 'success');
       await this.cargarServiciosDisponibles();
   
     } catch (error) {
@@ -90,6 +93,10 @@ export class UserAcceptPage implements OnInit {
       this.mostrarToast('Error al procesar la solicitud.', 'danger');
     }
   }
+  
+  
+  
+
   
   async mostrarToast(mensaje: string, color: string) {
     const toast = await this.toastController.create({

@@ -70,24 +70,25 @@ export class ServiceStatusPage implements OnInit {
   }
 
   async cargarServiciosUsuario() {
-  try {
-    const usuarioAutenticado = await this.loginService.obtenerUsuarioAutenticado();
-    if (usuarioAutenticado) {
-      this.usuarioAutenticado = usuarioAutenticado;
-      this.servicios = await this.loginService.obtenerServicios();
-      this.filtrarServiciosActivos();
-
-      // Forzar actualización de la lista
-      this.serviciosUsuario.forEach(servicio => {
-        servicio.todosAceptaron = servicio.pasajeros.every(p => p.acepto);
-      });
-    } else {
-      console.error('No hay un usuario autenticado.');
+    try {
+      const usuarioAutenticado = await this.loginService.obtenerUsuarioAutenticado();
+      if (usuarioAutenticado) {
+        this.usuarioAutenticado = usuarioAutenticado;
+        this.servicios = await this.loginService.obtenerServicios();
+        this.filtrarServiciosActivos();
+  
+        // Actualización explícita de la lista de pasajeros
+        this.serviciosUsuario.forEach(servicio => {
+          servicio.todosAceptaron = servicio.pasajeros.every(p => p.acepto);
+          servicio.vehiculo.asientosOcupados = servicio.pasajeros.filter(p => p.acepto).length;
+        });
+      } else {
+        console.error('No hay un usuario autenticado.');
+      }
+    } catch (error) {
+      console.error('Error al cargar servicios:', error);
     }
-  } catch (error) {
-    console.error('Error al cargar servicios:', error);
   }
-}
 
 
   async iniciarViaje(servicio: Service) {

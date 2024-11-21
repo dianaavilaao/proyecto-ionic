@@ -232,17 +232,28 @@ export class LoginService {
 }
 
 async actualizarServicio(servicioActualizado: Service): Promise<void> {
+  console.log('Intentando actualizar servicio:', servicioActualizado);
+
   const servicios = (await this.storage.get('servicios')) || [];
+  console.log('Servicios actuales en almacenamiento:', servicios);
+
   const index = servicios.findIndex((servicio: Service) => servicio.id === servicioActualizado.id);
 
   if (index > -1) {
     servicios[index] = servicioActualizado;
+    console.log('Servicio encontrado y actualizado:', servicios[index]);
+
     await this.storage.set('servicios', servicios);
-    console.log('Servicio actualizado en almacenamiento:', servicioActualizado);
+    console.log('Servicio actualizado en almacenamiento exitosamente.');
   } else {
     console.error('Servicio no encontrado para actualizar:', servicioActualizado);
   }
+
+  // Verificar estado del almacenamiento después de la actualización
+  const serviciosActualizados = await this.storage.get('servicios');
+  console.log('Estado actual de servicios en almacenamiento:', serviciosActualizados);
 }
+
 
 
 
