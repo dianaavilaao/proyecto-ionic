@@ -18,6 +18,7 @@
         <p>Vehículo: {{ servicio.vehiculo.marca }} {{ servicio.vehiculo.modelo }}</p>
         <p>Capacidad ocupada: {{ servicio.vehiculo.asientosOcupados }} de {{ servicio.vehiculo.capacidadMaxima }}</p>
         <p>Distancia máxima: {{ servicio.distanciaMaxima }} km</p>
+        <p>Tiempo restante: {{ servicio.tiempoRestante | number:'1.0-0' }} minutos</p>
       </ion-label>
       <ion-button 
         expand="block" 

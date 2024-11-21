@@ -23,23 +23,54 @@ export class UserAcceptPage implements OnInit {
     await this.cargarServiciosDisponibles();
   }
 
+  private calcularTiempoRestante(minutosAnuncio: number, idServicio: number): number {
+    const ahora = Date.now();
+    return minutosAnuncio - ((ahora - idServicio) / 60000);
+  }
+
   async cargarServiciosDisponibles() {
     try {
       this.usuarioAutenticado = await this.loginService.obtenerUsuarioAutenticado();
       const servicios = await this.loginService.obtenerServicios();
-
-      // Filtrar solo los servicios activos y que no estén en curso
-      this.serviciosDisponibles = servicios.filter(
-        (servicio: Service) => !servicio.enCurso && servicio.tiempoRestante! > 0
-      );
+  
+      this.serviciosDisponibles = servicios
+        .filter((servicio: Service) => 
+          !servicio.enCurso 
+        )
+        .map((servicio: Service) => {
+          
+          const tiempoRestante = this.calcularTiempoRestante(servicio.minutosAnuncio, servicio.id);
+          
+          
+          servicio.pasajeros = servicio.pasajeros || [];
+  
+          
+          const capacidadMaxima = servicio.vehiculo.capacidadMaxima || 0;
+          const asientosOcupados = servicio.vehiculo.asientosOcupados || 0;
+          const capacidadDisponible = Math.max(capacidadMaxima - asientosOcupados, 0); 
+  
+          return {
+            ...servicio,
+            tiempoRestante: Math.max(tiempoRestante, 0), 
+            capacidadDisponible
+          };
+        })
+        .filter((servicio: Service) => {
+          
+          return servicio.tiempoRestante && servicio.tiempoRestante > 0;
+        });
+  
+      
+      console.log('Servicios disponibles con tiempo restante:', this.serviciosDisponibles);
+  
     } catch (error) {
       console.error('Error al cargar servicios disponibles:', error);
     }
   }
-
+  
   puedeAceptarServicio(servicio: Service): boolean {
     const capacidadDisponible = servicio.vehiculo.capacidadMaxima - servicio.vehiculo.asientosOcupados;
-    return capacidadDisponible > 0; // Verifica si hay espacio disponible
+    return capacidadDisponible > 0; 
   }
 
   async aceptarViaje(servicio: Service) {
@@ -60,7 +91,6 @@ export class UserAcceptPage implements OnInit {
         return;
       }
   
-      // Verificar si el usuario ya es pasajero
       const pasajeroExistente = servicio.pasajeros.find(
         p => p.usuario === this.usuarioAutenticado.usuario
       );
@@ -89,14 +119,8 @@ export class UserAcceptPage implements OnInit {
       await this.cargarServiciosDisponibles();
   
     } catch (error) {
-      console.error('Error al aceptar el viaje:', error);
-      this.mostrarToast('Error al procesar la solicitud.', 'danger');
     }
   }
-  
-  
-  
-
   
   async mostrarToast(mensaje: string, color: string) {
     const toast = await this.toastController.create({

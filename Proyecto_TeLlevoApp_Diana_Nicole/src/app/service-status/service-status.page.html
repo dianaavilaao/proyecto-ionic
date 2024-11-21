@@ -17,8 +17,8 @@
         <p>Vehículo: {{ servicio.vehiculo.marca }} {{ servicio.vehiculo.modelo }}</p>
         <p>Capacidad ocupada: {{ servicio.vehiculo.asientosOcupados }} de {{ servicio.vehiculo.capacidadMaxima }}</p>
         <p>Tiempo restante: {{ servicio.tiempoRestante | number:'1.0-0' }} minutos</p>
-        
-        <!-- Lista de pasajeros mejorada -->
+  
+
         <div class="pasajeros-section">
           <h3>Pasajeros ({{ servicio.pasajeros.length }})</h3>
           <ion-list>
@@ -37,7 +37,7 @@
         </div>
       </ion-label>
       
-      <!-- Botón de inicio de viaje -->
+
       <ion-button 
         expand="block" 
         color="success" 
