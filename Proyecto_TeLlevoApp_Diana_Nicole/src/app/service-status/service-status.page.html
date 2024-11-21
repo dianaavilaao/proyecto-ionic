@@ -17,24 +17,38 @@
         <p>Vehículo: {{ servicio.vehiculo.marca }} {{ servicio.vehiculo.modelo }}</p>
         <p>Capacidad ocupada: {{ servicio.vehiculo.asientosOcupados }} de {{ servicio.vehiculo.capacidadMaxima }}</p>
         <p>Tiempo restante: {{ servicio.tiempoRestante | number:'1.0-0' }} minutos</p>
-        <p>Pasajeros:</p>
-        <ul>
-          <li *ngFor="let pasajero of servicio.pasajeros">
-            {{ pasajero.usuario }} - {{ pasajero.acepto ? 'Aceptó' : 'Pendiente' }}
-          </li>
-        </ul>
+        
+        <!-- Lista de pasajeros mejorada -->
+        <div class="pasajeros-section">
+          <h3>Pasajeros ({{ servicio.pasajeros.length }})</h3>
+          <ion-list>
+            <ion-item *ngFor="let pasajero of servicio.pasajeros" lines="none">
+              <ion-icon 
+                [name]="pasajero.acepto ? 'checkmark-circle' : 'time'" 
+                [color]="pasajero.acepto ? 'success' : 'warning'"
+                slot="start">
+              </ion-icon>
+              <ion-label>
+                {{ pasajero.usuario }}
+                <p>{{ pasajero.acepto ? 'Aceptado' : 'Pendiente' }}</p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
       </ion-label>
+      
+      <!-- Botón de inicio de viaje -->
       <ion-button 
         expand="block" 
         color="success" 
-        *ngIf="servicio.todosAceptaron" 
+        [disabled]="!servicio.todosAceptaron || servicio.pasajeros.length === 0"
         (click)="iniciarViaje(servicio)">
-        Iniciar Viaje
+        {{ servicio.todosAceptaron ? 'Iniciar Viaje' : 'Esperando aceptación' }}
       </ion-button>
     </ion-item>
   </ion-list>
 
-  <ion-text *ngIf="serviciosUsuario.length === 0">
+  <ion-text *ngIf="serviciosUsuario.length === 0" class="ion-padding">
     <p>No tienes servicios activos.</p>
   </ion-text>
 </ion-content>

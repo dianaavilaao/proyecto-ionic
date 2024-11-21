@@ -45,6 +45,10 @@ export class HomePage implements OnInit {
     this.navCtrl.navigateForward('/profile');
   }
 
+  goToUserAccept() {
+    this.navCtrl.navigateForward('/user-accept');
+  }
+
   ngAfterViewInit(): void {
     this.animacionCartas();
   }

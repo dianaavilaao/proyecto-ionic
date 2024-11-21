@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="volver()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Aceptar Viaje</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let servicio of serviciosDisponibles">
+      <ion-label>
+        <h2>Sede: {{ servicio.sede }}</h2>
+        <p>Conductor: {{ servicio.conductor.usuario }}</p>
+        <p>Vehículo: {{ servicio.vehiculo.marca }} {{ servicio.vehiculo.modelo }}</p>
+        <p>Capacidad ocupada: {{ servicio.vehiculo.asientosOcupados }} de {{ servicio.vehiculo.capacidadMaxima }}</p>
+        <p>Distancia máxima: {{ servicio.distanciaMaxima }} km</p>
+      </ion-label>
+      <ion-button 
+        expand="block" 
+        color="primary" 
+        [disabled]="!puedeAceptarServicio(servicio)" 
+        (click)="aceptarViaje(servicio)">
+        Aceptar Viaje
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-text *ngIf="serviciosDisponibles.length === 0">
+    <p>No hay servicios disponibles en este momento.</p>
+  </ion-text>
+</ion-content>
+

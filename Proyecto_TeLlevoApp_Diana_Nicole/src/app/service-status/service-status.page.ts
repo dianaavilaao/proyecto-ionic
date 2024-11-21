@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../services/login.service';
 import { Service } from '../models/servicio';
-import { NavController } from '@ionic/angular';
+import { NavController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-service-status',
@@ -14,7 +14,8 @@ export class ServiceStatusPage implements OnInit {
   usuarioAutenticado: any;
 
   constructor(private loginService: LoginService,
-    private navController: NavController
+    private navController: NavController,
+    private toastController: ToastController
   ) {}
 
   async ngOnInit() {
@@ -25,66 +26,108 @@ export class ServiceStatusPage implements OnInit {
     this.navController.back();
   }
   
- filtrarServiciosActivos() {
-  const ahora = Date.now();
+  filtrarServiciosActivos() {
+    const ahora = Date.now();
 
-  this.serviciosUsuario = this.servicios
-    .filter(servicio => servicio.conductor.usuario === this.usuarioAutenticado.usuario)
-    .map(servicio => {
-      const tiempoRestante = servicio.minutosAnuncio - ((ahora - servicio.id) / 60000);
-      const capacidadMaxima = servicio.vehiculo.capacidadMaxima || 0;
-      const asientosOcupados = servicio.vehiculo.asientosOcupados || 0;
+    this.serviciosUsuario = this.servicios
+      .filter(servicio => 
+        servicio.conductor.usuario === this.usuarioAutenticado.usuario && 
+        !servicio.enCurso
+      )
+      .map(servicio => {
+        // Calcular tiempo restante
+        const tiempoRestante = this.calcularTiempoRestante(servicio.minutosAnuncio, servicio.id);
+        
+        // Asegurar que el array de pasajeros existe
+        servicio.pasajeros = servicio.pasajeros || [];
 
-      // Asegurar que pasajeros es un array válido
-      servicio.pasajeros = servicio.pasajeros || [];
+        // Verificar si hay pasajeros y si todos aceptaron
+        const hayPasajeros = servicio.pasajeros.length > 0;
+        const todosAceptaron = hayPasajeros && servicio.pasajeros.every(p => p.acepto);
 
-      // Calcular capacidad disponible y si todos los pasajeros aceptaron
-      const todosAceptaron = servicio.pasajeros.every(pasajero => pasajero.acepto);
-
-      return {
-        ...servicio,
-        tiempoRestante: Math.max(tiempoRestante, 0), // Asegurar que no sea negativo
-        capacidadMaxima,
-        asientosOcupados,
-        todosAceptaron, // Asigna a la nueva propiedad
-      };
-    })
-    .filter(servicio => servicio.tiempoRestante > 0); // Mostrar solo servicios activos
-}
+        return {
+          ...servicio,
+          tiempoRestante: Math.max(tiempoRestante, 0),
+          todosAceptaron
+        };
+      })
+      .filter(servicio => servicio.tiempoRestante > 0);
+  }
   
-  async cargarServiciosUsuario() {
-    try {
-      // Obtener el usuario autenticado
-      const usuarioAutenticado = await this.loginService.obtenerUsuarioAutenticado();
-  
-      if (usuarioAutenticado) {
-        this.usuarioAutenticado = usuarioAutenticado; // Guarda el usuario autenticado
-        this.servicios = await this.loginService.obtenerServicios(); // Obtén todos los servicios
-  
-        // Aplicar filtro para servicios activos
-        this.filtrarServiciosActivos();
-      } else {
-        console.error('No hay un usuario autenticado.');
-      }
-    } catch (error) {
-      console.error('Error al cargar servicios:', error);
-    }
+
+  private calcularTiempoRestante(minutosAnuncio: number, idServicio: number): number {
+    const ahora = Date.now();
+    return minutosAnuncio - ((ahora - idServicio) / 60000);
   }
 
-  iniciarViaje(servicio: Service) {
-    if (servicio.todosAceptaron) {
-      servicio.enCurso = true; // Marcar el servicio como en curso
-      this.loginService.actualizarServicio(servicio).then(() => {
-        console.log('El viaje ha comenzado.');
-        alert('El viaje ha sido iniciado exitosamente.');
-      }).catch(err => {
-        console.error('Error al iniciar el viaje:', err);
+
+  puedeIniciarViaje(servicio: Service): boolean {
+    return (
+      servicio.pasajeros.length > 0 &&
+      servicio.pasajeros.every(p => p.acepto) &&
+      !servicio.enCurso
+    );
+  }
+
+  async cargarServiciosUsuario() {
+  try {
+    const usuarioAutenticado = await this.loginService.obtenerUsuarioAutenticado();
+    if (usuarioAutenticado) {
+      this.usuarioAutenticado = usuarioAutenticado;
+      this.servicios = await this.loginService.obtenerServicios();
+      this.filtrarServiciosActivos();
+
+      // Forzar actualización de la lista
+      this.serviciosUsuario.forEach(servicio => {
+        servicio.todosAceptaron = servicio.pasajeros.every(p => p.acepto);
       });
     } else {
-      alert('No todos los pasajeros han aceptado el viaje.');
+      console.error('No hay un usuario autenticado.');
+    }
+  } catch (error) {
+    console.error('Error al cargar servicios:', error);
+  }
+}
+
+
+  async iniciarViaje(servicio: Service) {
+    if (!this.puedeIniciarViaje(servicio)) {
+      const mensaje = servicio.pasajeros.length === 0 
+        ? 'No hay pasajeros en el viaje.' 
+        : 'No todos los pasajeros han confirmado.';
+      
+      const toast = await this.toastController.create({
+        message: mensaje,
+        duration: 3000,
+        color: 'warning'
+      });
+      toast.present();
+      return;
+    }
+
+    try {
+      servicio.enCurso = true;
+      await this.loginService.actualizarServicio(servicio);
+      
+      const toast = await this.toastController.create({
+        message: 'El viaje ha comenzado exitosamente.',
+        duration: 3000,
+        color: 'success'
+      });
+      toast.present();
+      
+      // Recargar los servicios
+      await this.cargarServiciosUsuario();
+    } catch (error) {
+      console.error('Error al iniciar el viaje:', error);
+      const toast = await this.toastController.create({
+        message: 'Error al iniciar el viaje.',
+        duration: 3000,
+        color: 'danger'
+      });
+      toast.present();
     }
   }
-  
 
   aceptarViaje(servicio: Service, usuario: string) {
     const pasajero = servicio.pasajeros.find(p => p.usuario === usuario);
@@ -97,6 +140,4 @@ export class ServiceStatusPage implements OnInit {
       });
     }
   }
-  
-  
-}
+ }
