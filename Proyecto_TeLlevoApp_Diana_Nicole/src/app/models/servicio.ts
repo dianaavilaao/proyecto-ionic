@@ -1,14 +1,24 @@
-// service.model.ts
 import { Vehiculo } from './vehiculo';
 import { User } from './user';
+import { Pasajero } from './pasajero';
 
 export class Service {
   id!: number;
-  conductor!: User; // Referencia al usuario que ofrece el servicio
-  vehiculo!: Vehiculo; // Referencia al vehículo utilizado en el servicio
-  sede!: string; // Sede seleccionada para el servicio
-  minutosAnuncio!: number; // Minutos que durará el anuncio
-  distanciaMaxima!: number; // Distancia máxima en kilómetros
+  conductor!: User;
+  vehiculo!: Vehiculo;
+  sede!: string;
+  minutosAnuncio!: number;
+  distanciaMaxima!: number;
+
+  // Propiedades calculadas
+  tiempoRestante?: number;
+  capacidadDisponible?: number;
+
+  pasajeros: Pasajero[] = []; // Ahora es un array de objetos `Pasajero`
+  enCurso: boolean = false;
+
+  // Nuevo campo
+  todosAceptaron?: boolean;
 
   constructor(
     id: number,

@@ -63,7 +63,7 @@ export class LoginService {
   // Busca un usuario en storage
   async buscarUsuario(usuario: string): Promise<User | undefined> {
     const storedUsers = await this.storage.get('users');
-    console.log('Usuarios almacenados:', storedUsers);  // <-- Verifica qué usuarios están almacenados
+    console.log('Usuarios almacenados:', storedUsers);  
     const users = storedUsers || [];
   
     return users.find((user: User) => user.usuario.toLowerCase() === usuario.toLowerCase());
@@ -203,6 +203,16 @@ export class LoginService {
     return (await this.storage.get('servicios')) || [];
   }
 
+  async obtenerServiciosListo(): Promise<Service[]> {
+    const servicios = (await this.storage.get('servicios')) || [];
+    return servicios.map((servicio: Service) => ({
+      ...servicio,
+      pasajeros: servicio.pasajeros || [] // Asegurar que pasajeros sea un arreglo
+    }));
+  }
+  
+  
+
   // Elimina un servicio por su ID
   async eliminarServicio(id: number): Promise<void> {
     const servicios = (await this.storage.get('servicios')) || [];
@@ -210,7 +220,7 @@ export class LoginService {
     await this.storage.set('servicios', serviciosActualizados);
   }
 
-  async actualizarAsientosOcupados(usuario: string, asientosOcupados: number): Promise<void> {
+    async actualizarAsientosOcupados(usuario: string, asientosOcupados: number): Promise<void> {
     const storedUsers = await this.storage.get('users');
     const users = storedUsers || [];
 
@@ -220,4 +230,31 @@ export class LoginService {
         await this.storage.set('users', users);
     }
 }
+
+async actualizarServicio(servicioActualizado: Service): Promise<void> {
+  console.log('Intentando actualizar servicio:', servicioActualizado);
+
+  const servicios = (await this.storage.get('servicios')) || [];
+  console.log('Servicios actuales en almacenamiento:', servicios);
+
+  const index = servicios.findIndex((servicio: Service) => servicio.id === servicioActualizado.id);
+
+  if (index > -1) {
+    servicios[index] = servicioActualizado;
+    console.log('Servicio encontrado y actualizado:', servicios[index]);
+
+    await this.storage.set('servicios', servicios);
+    console.log('Servicio actualizado en almacenamiento exitosamente.');
+  } else {
+    console.error('Servicio no encontrado para actualizar:', servicioActualizado);
+  }
+
+  // Verificar estado del almacenamiento después de la actualización
+  const serviciosActualizados = await this.storage.get('servicios');
+  console.log('Estado actual de servicios en almacenamiento:', serviciosActualizados);
+}
+
+
+
+
 }

@@ -47,6 +47,14 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'service-status',
+    loadChildren: () => import('./service-status/service-status.module').then( m => m.ServiceStatusPageModule)
+  },
+  {
+    path: 'user-accept',
+    loadChildren: () => import('./user-accept/user-accept.module').then(m => m.UserAcceptPageModule)
+  },
+  {
     path: 'not-found',
     loadChildren: () => import('./not-found/not-found.module').then( m => m.NotFoundPageModule)
   },
@@ -58,6 +66,10 @@ const routes: Routes = [
     path: '**', 
     redirectTo: 'not-found' 
   },
+
+  
+
+
 ];
 
 @NgModule({
