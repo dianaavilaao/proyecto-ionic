@@ -4,6 +4,7 @@ import { ModalController } from '@ionic/angular';
 import { LoginService } from '../services/login.service';
 import { User } from '../models/user';
 import { Vehiculo } from '../models/vehiculo';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-profile',
@@ -22,7 +23,8 @@ export class ProfilePage implements OnInit {
     private navCtrl: NavController,
     private navController: NavController,
     private modalController: ModalController,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private alertController: AlertController
   ) { }
 
   async ngOnInit() {
@@ -51,13 +53,29 @@ export class ProfilePage implements OnInit {
 
   // Método para confirmar la edición del usuario
   async confirmEditModal() {
-    if (this.usuario) {
-      await this.loginService.actualizarUsuarioAutenticado(this.usuario);
-      this.modal.dismiss(this.usuario, 'confirm');
-      await this.cargarDatosUsuario(); // Recarga los datos después de actualizar
-      this.navController.navigateBack('/profile');
-    }
-    
+    const alert = await this.alertController.create({
+      header: 'Confirmar cambios',
+      message: '¿Estás seguro de que quieres guardar los cambios en tu perfil?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Aceptar',
+          handler: async () => {
+            if (this.usuario) {
+              await this.loginService.actualizarUsuarioAutenticado(this.usuario);
+              this.modal.dismiss(this.usuario, 'confirm');
+              await this.cargarDatosUsuario(); 
+              this.navController.navigateBack('/profile');
+            }
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 
   dismissEditModal() {
@@ -75,12 +93,30 @@ export class ProfilePage implements OnInit {
   }
 
   async deleteVehicle() {
-    if (this.usuario) {
-      await this.loginService.eliminarVehiculo(this.usuario.usuario);
-      this.vehiculo = null;
-      // Recargar datos
-      await this.ngOnInit();
-    }
+    const alert = await this.alertController.create({
+      header: 'Eliminar vehículo',
+      message: '¿Estás seguro de que quieres eliminar este vehículo?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Eliminar',
+          role: 'destructive',
+          handler: async () => {
+            if (this.usuario) {
+              await this.loginService.eliminarVehiculo(this.usuario.usuario);
+              this.vehiculo = null;
+              // Recargar datos
+              await this.ngOnInit();
+            }
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 
   dismissAddVehicleModal() {
