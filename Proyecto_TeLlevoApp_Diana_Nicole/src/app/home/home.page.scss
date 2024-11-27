@@ -25,3 +25,19 @@
 #container a {
   text-decoration: none;
 }
+
+.carrito {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+}
+
+@keyframes moverCarrito {
+  0% {
+    left: -100px;
+  }
+  100% {
+    left: 100%; /* Finaliza fuera de la pantalla derecha */
+  }
+}
