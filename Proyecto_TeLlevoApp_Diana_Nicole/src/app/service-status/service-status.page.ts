@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../services/login.service';
 import { Service } from '../models/servicio';
 import { NavController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-service-status',
@@ -13,8 +14,10 @@ export class ServiceStatusPage implements OnInit {
   serviciosUsuario: Service[] = []; // Servicios del usuario autenticado
   usuarioAutenticado: any;
 
-  constructor(private loginService: LoginService,
-    private navController: NavController
+  constructor(
+    private loginService: LoginService,
+    private navController: NavController,
+    private alertController: AlertController
   ) {}
 
   async ngOnInit() {
@@ -92,7 +95,7 @@ export class ServiceStatusPage implements OnInit {
   
   
   
-//funcion pa pasajero
+  //funcion para pasajero
   aceptarViaje(servicio: Service, usuario: string) {
     const pasajero = servicio.pasajeros.find(p => p.usuario === usuario);
     if (pasajero) {
@@ -105,5 +108,29 @@ export class ServiceStatusPage implements OnInit {
     }
   }
   
+
+  async confirmarInicioViaje(servicio: Service) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar inicio de viaje',
+      message: '¿Estás seguro de que deseas iniciar este viaje?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Inicio de viaje cancelado');
+          }
+        },
+        {
+          text: 'Iniciar',
+          handler: () => {
+            this.iniciarViaje(servicio); 
+          }
+        }
+      ]
+    });
   
+    await alert.present();
+  }
 }

@@ -42,9 +42,10 @@
         expand="block" 
         color="success" 
         [disabled]="!servicio.todosAceptaron || servicio.pasajeros.length === 0"
-        (click)="iniciarViaje(servicio)">
+        (click)="confirmarInicioViaje(servicio)">
         {{ servicio.todosAceptaron ? 'Iniciar Viaje' : 'Esperando aceptación' }}
       </ion-button>
+      
     </ion-item>
   </ion-list>
 

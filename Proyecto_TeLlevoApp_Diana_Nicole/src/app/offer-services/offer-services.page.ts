@@ -6,6 +6,7 @@ import { User } from '../models/user';
 import { Vehiculo } from '../models/vehiculo';
 import { Service } from '../models/servicio';
 import { LoginService } from '../services/login.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-offer-services',
@@ -29,7 +30,8 @@ export class OfferServicesPage implements OnInit {
     private loginService: LoginService,
     private modalController: ModalController,
     private toastController: ToastController,
-    private router: Router
+    private router: Router,
+    private alertController: AlertController
   ) {}
 
   async ngOnInit() {
@@ -147,6 +149,30 @@ export class OfferServicesPage implements OnInit {
   goToServiceStatus() {
     this.router.navigate(['/service-status']);
   }
-    
+  
+  async confirmarEdicion() {
+    const alert = await this.alertController.create({
+      header: 'Confirmar edición',
+      message: '¿Estás seguro de que deseas guardar los cambios en el vehículo?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Edición cancelada');
+          }
+        },
+        {
+          text: 'Guardar',
+          handler: () => {
+            this.confirmEditModal(); // Llamar al método para guardar los cambios
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
+  }
 
 }
