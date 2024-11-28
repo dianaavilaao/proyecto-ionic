@@ -15,6 +15,7 @@ import { ElementRef } from '@angular/core';
 export class HomePage implements OnInit {
   name!: string;
   viajeEnCurso: Service | null = null; // Viaje en curso asociado al usuario
+  carritoVisible: boolean = false; // Controla la visibilidad del carrito
   @ViewChild('carrito') carritoElement!: ElementRef;
 
   constructor(
@@ -35,7 +36,7 @@ export class HomePage implements OnInit {
         const servicios = await this.loginService.obtenerServicios();
         this.viajeEnCurso = servicios.find(s => s.id === +viajeId) || null;
 
-        // Si el viaje está en curso, activar la animación
+        // Si el viaje está en curso, activar el carrito
         if (this.viajeEnCurso?.enCurso) {
           this.activarCarrito();
         }
@@ -65,26 +66,28 @@ export class HomePage implements OnInit {
 
   // Función para activar la animación
   activarCarrito() {
+    this.carritoVisible = true; // Actualiza el estado de visibilidad del carrito
     const carrito = this.carritoElement.nativeElement;
-    carrito.style.display = 'block';  // Asegurarse de que el carrito sea visible
+    carrito.style.display = 'block';
     this.iniciarAnimacionViaje();
   }
 
-  // Función para iniciar la animación del carrito
   iniciarAnimacionViaje() {
     const carrito = this.carritoElement.nativeElement;
-
+  
+    // Obtener el ancho de la pantalla
+    const screenWidth = window.innerWidth;
+  
     // Crear la animación
     const animation = this.animationCtrl.create()
-      .addElement(carrito) // Elemento que se va a animar
-      .duration(1000) // Duración de la animación en milisegundos
+      .addElement(carrito)
+      .duration(3000) // Ajusta la duración para el movimiento del carrito
       .iterations(Infinity) // Hace que la animación se repita infinitamente
       .keyframes([
-        { transform: 'translateX(0px)', offset: 0 }, // Posición inicial
-        { transform: 'translateX(200px)', offset: 0.5 }, // Desplazamiento a la derecha
-        { transform: 'translateX(0px)', offset: 1 }, // Regreso a la posición inicial
+        { transform: `translateX(-${screenWidth}px)`, offset: 0 }, // Fuera de la pantalla por la izquierda
+        { transform: `translateX(${screenWidth}px)`, offset: 1 }   // Fuera de la pantalla por la derecha
       ]);
-
+  
     // Iniciar la animación
     animation.play();
   }

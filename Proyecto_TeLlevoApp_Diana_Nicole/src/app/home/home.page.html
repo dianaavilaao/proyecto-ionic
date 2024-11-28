@@ -13,22 +13,25 @@
     <ion-title>Bienvenide {{name}}!</ion-title>
   </ion-toolbar>
 
-  <!-- Asegúrate de que el carrito esté oculto inicialmente -->
   <div #carrito class="carrito" style="display: none;">
+    <br><br>
     <img alt="Carrito" src="assets/icon/carrito.png"/>
+    <span class="mensaje">Tu viaje está en curso</span>
+    <br><br>
   </div>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content>
 
-  <ion-button expand="block" (click)="goToUserAccept()">Tus viajes</ion-button>
+  <ion-button expand="block" (click)="goToUserAccept()" class="ion-padding" [class.con-carrito]="carritoVisible">
+    Tus viajes</ion-button>
 
   <h3 style="font-weight: bold;">
     Elige tu modo
   </h3>
 
   <ion-card class="card-ofrece">
-    <img alt="Modo ofrece viajes" src="assets\images\modo-ofrece-viajes.png" />
+    <img alt="Modo ofrece viajes" src="assets/images/modo-ofrece-viajes.png" />
     <ion-card-header>
       <ion-card-title>Ofrece viajes</ion-card-title>
     </ion-card-header>
@@ -39,11 +42,10 @@
   </ion-card>
 
   <ion-card class="card-busca">
-    <img alt="Modo busca transporte" src="assets\images\modo-busca-transporte.png" />
+    <img alt="Modo busca transporte" src="assets/images/modo-busca-transporte.png" />
     <ion-card-header>
       <ion-card-title>Busca transporte</ion-card-title>
     </ion-card-header>
-  
     <ion-card-content>
       Este modo te permitirá buscar transporte proporcionado por otros estudiantes del Duoc.
       <ion-button expand="block" (click)="goToSearchServices()">Ir</ion-button>
