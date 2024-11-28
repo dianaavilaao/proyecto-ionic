@@ -41,3 +41,22 @@
     left: 100%; /* Finaliza fuera de la pantalla derecha */
   }
 }
+
+.con-carrito {
+  margin-top: 50px; /* Ajusta este valor según el espacio que necesites */
+}
+
+
+.carrito img {
+  margin-right: 10px; /* Espacio entre el carrito y el mensaje */
+  position: relative;
+  top: 10px; /* Ajusta este valor según lo que necesites para mover la imagen hacia abajo */
+}
+
+.carrito .mensaje {
+  font-size: 20px;
+  color: #333; /* Ajusta el color del texto */
+  white-space: nowrap; /* Evita que el texto se corte o envuelva */
+  position: relative;
+  top: -10px; /* Ajusta este valor según lo que necesites */
+}
