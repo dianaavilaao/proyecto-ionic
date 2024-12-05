@@ -52,12 +52,14 @@
       <ion-list>
         <ion-item *ngFor="let servicio of serviciosFiltrados">
           <ion-label>
-            <h2>{{ servicio.conductor.usuario }}</h2>
-            <p>Sede: {{ servicio.sede }}</p>
-            <p>Vehículo: {{ servicio.vehiculo.marca }} {{ servicio.vehiculo.modelo }}</p>
-            <p>Tiempo restante: {{ servicio.tiempoRestante | number:'1.0-0' }} minutos</p>
-            <p>Distancia máxima: {{ servicio.distanciaMaxima }} km</p>
-            <p>Capacidad disponible: {{ servicio.capacidadDisponible }}</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+              <span><strong>{{ servicio.conductor.usuario }}</strong></span>
+              <span>Sede: {{ servicio.sede }}</span>
+              <span>Vehículo: {{ servicio.vehiculo.marca }} {{ servicio.vehiculo.modelo }}</span>
+              <span>Tiempo restante: {{ servicio.tiempoRestante | number:'1.0-0' }} minutos</span>
+              <span>Distancia máxima: {{ servicio.distanciaMaxima }} km</span>
+              <span>Capacidad disponible: {{ servicio.capacidadDisponible }}</span>
+            </div>
           </ion-label>
           <ion-button id="button" slot="end" (click)="tomarViaje(servicio)">Tomar viaje</ion-button>
         </ion-item>
