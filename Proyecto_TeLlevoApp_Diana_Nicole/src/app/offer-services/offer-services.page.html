@@ -11,7 +11,14 @@
 
 <ion-content class="ion-padding">
   
-  <ion-button style="background: #3880ff; color: white;" expand="block" (click)="goToServiceStatus()">Revisar estado de servicios</ion-button>
+
+  <ion-button style="color: white;" expand="block" (click)="goToServiceStatus()">Revisar estado de servicios</ion-button>
+
+
+  <ion-button expand="block" (click)="goToServiceStatus()">Revisar estado de servicios</ion-button>
+
+  <ion-button style="color: white;" expand="block" (click)="goToServiceStatus()">Revisar estado de servicios</ion-button>
+
 
     <ion-card *ngIf="vehiculo"> 
       <ion-card-header>
@@ -42,7 +49,15 @@
         </ion-item>
         
       </ion-card-content>
-      <ion-button style="background: #3880ff; color: white;" id="button" id="open-edit-vehicle-modal" expand="block">Editar vehículo<ion-icon name="create-outline"></ion-icon></ion-button>
+
+      <ion-button style="color: white;" id="button" id="open-edit-vehicle-modal" expand="block">Editar vehículo<ion-icon name="create-outline"></ion-icon></ion-button>
+
+
+      <ion-button id="open-edit-vehicle-modal" expand="block">Editar vehículo</ion-button>
+
+      <ion-button style="color: white;" id="button" id="open-edit-vehicle-modal" expand="block">
+        Editar vehículo <ion-icon name="create-outline"></ion-icon>
+      </ion-button>
   <ion-modal trigger="open-edit-vehicle-modal">
     <ng-template>
       <ion-header>
@@ -50,7 +65,13 @@
           <ion-buttons slot="start">
             <ion-button (click)="cancelEdit()">Cancelar</ion-button>
           </ion-buttons>
+
           <ion-title>Editar vehículo<ion-icon name="create-outline"></ion-icon></ion-title>
+
+
+          <ion-title>Editar vehículo</ion-title>
+
+
         </ion-toolbar>
       </ion-header>
 
