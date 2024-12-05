@@ -11,7 +11,11 @@
 
 <ion-content class="ion-padding">
   
+<<<<<<< Updated upstream
   <ion-button expand="block" (click)="goToServiceStatus()">Revisar estado de servicios</ion-button>
+=======
+  <ion-button style="color: white;" expand="block" (click)="goToServiceStatus()">Revisar estado de servicios</ion-button>
+>>>>>>> Stashed changes
 
     <ion-card *ngIf="vehiculo"> 
       <ion-card-header>
@@ -42,7 +46,13 @@
         </ion-item>
         
       </ion-card-content>
+<<<<<<< Updated upstream
       <ion-button id="open-edit-vehicle-modal" expand="block">Editar vehículo</ion-button>
+=======
+      <ion-button style="color: white;" id="button" id="open-edit-vehicle-modal" expand="block">
+        Editar vehículo <ion-icon name="create-outline"></ion-icon>
+      </ion-button>
+>>>>>>> Stashed changes
   <ion-modal trigger="open-edit-vehicle-modal">
     <ng-template>
       <ion-header>
@@ -50,7 +60,10 @@
           <ion-buttons slot="start">
             <ion-button (click)="cancelEdit()">Cancelar</ion-button>
           </ion-buttons>
+<<<<<<< Updated upstream
           <ion-title>Editar vehículo</ion-title>
+=======
+>>>>>>> Stashed changes
         </ion-toolbar>
       </ion-header>
 
