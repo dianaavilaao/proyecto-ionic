@@ -42,15 +42,15 @@
         </ion-item>
         
       </ion-card-content>
-      <ion-button id="open-edit-vehicle-modal" expand="block">Editar vehículo</ion-button>
+      <ion-button id="open-edit-vehicle-modal" expand="block">Editar vehículo<ion-icon name="create-outline"></ion-icon></ion-button>
   <ion-modal trigger="open-edit-vehicle-modal">
     <ng-template>
       <ion-header>
         <ion-toolbar>
           <ion-buttons slot="start">
-            <ion-button (click)="cancelEdit()">Cancelar</ion-button>
+            <ion-button (click)="cancelEdit()">Cancelar<ion-icon name="close-outline"></ion-icon></ion-button>
           </ion-buttons>
-          <ion-title>Editar vehículo</ion-title>
+          <ion-title>Editar vehículo<ion-icon name="create-outline"></ion-icon></ion-title>
         </ion-toolbar>
       </ion-header>
 
@@ -87,7 +87,7 @@
         </ion-item>
 
 
-        <ion-button expand="block" (click)="confirmarEdicion()">Guardar cambios</ion-button>
+        <ion-button expand="block" (click)="confirmarEdicion()">Guardar cambios<ion-icon name="save-outline"></ion-icon></ion-button>
       </form>
       </ion-content>
     </ng-template>
@@ -102,7 +102,7 @@
       <ion-card-content>
         <p>Por favor, registra tu vehículo para verlo aquí y ofrecer viajes.</p>
       </ion-card-content>
-      <ion-button id="open-modal" expand="block">Agregar vehiculo</ion-button>
+      <ion-button id="open-modal" expand="block">Agregar vehiculo <ion-icon name="add-outline"></ion-icon></ion-button>
       <ion-modal trigger="open-modal">
         <ng-template>
           <ion-header>
@@ -227,7 +227,7 @@
     <ion-input [(ngModel)]="distanciaMaxima" type="number" placeholder="Ej: 5"></ion-input>
   </ion-item>
 
-  <ion-button expand="block" (click)="crearServicio()">Aceptar</ion-button>
+  <ion-button expand="block" (click)="crearServicio()">Aceptar <ion-icon name="checkmark-outline"></ion-icon></ion-button>
   
   </ion-card>
 

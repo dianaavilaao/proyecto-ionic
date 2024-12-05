@@ -12,12 +12,12 @@
 <ion-content>
   <!-- Campo para ingresar la dirección destino -->
   <ion-item>
-    <ion-label position="floating">Ingrese su dirección destino</ion-label>
+    <ion-label position="floating">Ingrese su dirección destino<ion-icon name="search-outline"></ion-icon></ion-label>
     <ion-input #search [(ngModel)]="direccionDestino" type="text"></ion-input>
   </ion-item>
   
   <!-- Botón para aceptar la dirección e iniciar la búsqueda de la ruta -->
-  <ion-button expand="block" (click)="aceptarDireccion()">Aceptar</ion-button>
+  <ion-button expand="block" (click)="aceptarDireccion()">Aceptar<ion-icon name="checkmark-outline"></ion-icon></ion-button>
   
   <!-- Mapa donde se mostrará la ruta -->
   <div #map id="map" style="height: 50vh; margin-top: 10px;"></div>
@@ -28,6 +28,6 @@
   [disabled]="!puedeAceptarViaje" 
   [color]="puedeAceptarViaje ? 'primary' : 'medium'" 
   (click)="aceptarViaje()">
-  Aceptar viaje
+  Aceptar viaje<ion-icon name="checkmark-outline"></ion-icon>
 </ion-button>
 </ion-content>
