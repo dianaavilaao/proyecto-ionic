@@ -7,10 +7,10 @@
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button (click)="goToProfile()">
-        <ion-icon name="person-outline"></ion-icon>
+        <ion-icon name="person-circle-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Bienvenide {{name}}!</ion-title>
+    <ion-title>¡Bienvenidx {{name}}!</ion-title>
   </ion-toolbar>
 
   <div #carrito class="carrito" style="display: none;">
@@ -23,32 +23,31 @@
 
 <ion-content>
 
-  <ion-button expand="block" (click)="goToUserAccept()" class="ion-padding" [class.con-carrito]="carritoVisible">
-    Tus viajes</ion-button>
+  <ion-button id="button" expand="block" (click)="goToUserAccept()" class="ion-padding" [class.con-carrito]="carritoVisible">Aceptar viajes<ion-icon name="car-outline"></ion-icon></ion-button>
 
-  <h3 style="font-weight: bold;">
+  <h3 style="font-weight: bold; margin-left: 10px;">
     Elige tu modo
   </h3>
 
   <ion-card class="card-ofrece">
-    <img alt="Modo ofrece viajes" src="assets/images/modo-ofrece-viajes.png" />
+    <img style="width: 100%; height: 200px;" alt="Modo ofrece viajes" src="assets/images/modo-ofrece-viajes.png" />
     <ion-card-header>
       <ion-card-title>Ofrece viajes</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       Este modo te permitirá ofrecer viajes a otros estudiantes del Duoc y ganar dinero.
-      <ion-button expand="block" (click)="goToOfferServices()">Ir</ion-button>
+      <ion-button id="button" id="card" expand="block" (click)="goToOfferServices()">Ir<ion-icon name="chevron-forward-outline"></ion-icon></ion-button>
     </ion-card-content>
   </ion-card>
 
   <ion-card class="card-busca">
-    <img alt="Modo busca transporte" src="assets/images/modo-busca-transporte.png" />
+    <img style="width: 100%; height: 200px;"  alt="Modo busca transporte" src="assets/images/modo-busca-transporte.png" />
     <ion-card-header>
       <ion-card-title>Busca transporte</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       Este modo te permitirá buscar transporte proporcionado por otros estudiantes del Duoc.
-      <ion-button expand="block" (click)="goToSearchServices()">Ir</ion-button>
+      <ion-button id="button" id="card" expand="block" (click)="goToSearchServices()">Ir<ion-icon name="chevron-forward-outline"></ion-icon></ion-button>
     </ion-card-content>
   </ion-card>
 

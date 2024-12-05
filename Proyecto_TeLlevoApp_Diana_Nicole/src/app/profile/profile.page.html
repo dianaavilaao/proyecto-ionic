@@ -28,7 +28,7 @@
         <ion-label>Teléfono:</ion-label>
         <ion-text>{{ usuario.telefono }}</ion-text>
       </ion-item>
-      <ion-button id="open-edit-user-modal" expand="block">Editar</ion-button>
+      <ion-button style="color: white;" id="button" id="open-edit-user-modal" expand="block">Editar<ion-icon name="create-outline"></ion-icon></ion-button>
 
       <ion-modal trigger="open-edit-user-modal">
         <ng-template>
@@ -57,7 +57,8 @@
                 <ion-input type="text" [(ngModel)]="usuario.telefono" name="phone" required></ion-input>
               </ion-item>
 
-              <ion-button expand="block" type="submit">Guardar cambios</ion-button>
+              <ion-button style="color: white;" expand="block" type="submit">Guardar cambios <ion-icon name="save-outline"></ion-icon>
+              </ion-button>
             </form>
           </ion-content>
         </ng-template>
@@ -91,13 +92,13 @@
         <ion-label>Color:</ion-label>
         <ion-text>{{ vehiculo.color }}</ion-text>
       </ion-item>
-      <ion-button color="danger" expand="block" (click)="deleteVehicle()">Eliminar vehículo</ion-button>
+      <ion-button id="button" color="danger" expand="block" (click)="deleteVehicle()">Eliminar vehículo <ion-icon name="trash-outline"></ion-icon></ion-button>
       <ion-modal trigger="open-edit-vehicle-modal">
         <ng-template>
           <ion-header>
             <ion-toolbar>
               <ion-buttons slot="start">
-                <ion-button (click)="dismissEditVehicleModal()">Cancelar</ion-button>
+                <ion-button id="button" (click)="dismissEditVehicleModal()">Cancelar</ion-button>
               </ion-buttons>
               <ion-title>Editar vehículo</ion-title>
             </ion-toolbar>
@@ -124,7 +125,7 @@
                 <ion-input type="text" [(ngModel)]="editingVehicle.color" name="color" required></ion-input>
               </ion-item>
           
-              <ion-button expand="block" type="submit">Guardar cambios</ion-button>
+              <ion-button id="button" expand="block" type="submit">Guardar cambios</ion-button>
             </form>
           </ion-content>
             </ng-template>

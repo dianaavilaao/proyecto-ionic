@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Inicio de sesión</ion-title>
+    <ion-title>Iniciar sesión</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -21,19 +21,22 @@
  
   <form (ngSubmit)="login()">
     <ion-item>
+      <ion-icon style="font-size:medium; margin-top: 40px;" name="person-outline" slot="start"></ion-icon>
       <ion-label position="floating">Nombre de usuario</ion-label>
-      <ion-input type="text" [(ngModel)]="usuario" name="usuario" required></ion-input>
+      <ion-input type="text" [(ngModel)]="usuario" name="usuario"required ></ion-input>
     </ion-item>
-
+  
     <ion-item>
+      <ion-icon style="font-size:medium; margin-top: 40px;" name="lock-closed-outline" slot="start"></ion-icon>
       <ion-label position="floating">Contraseña</ion-label>
-      <ion-input type="password" [(ngModel)]="contrasena" name="contrasena" required></ion-input>
+      <ion-input type="password" [(ngModel)]="contrasena" name="contrasena" required ></ion-input>
     </ion-item>
-
-    <ion-button expand="block" type="submit">Ingresar</ion-button>
+  
+    <ion-button id="button" expand="block" type="submit">Ingresar <ion-icon name="chevron-forward-outline"></ion-icon></ion-button>
   </form>
+  
 
-  <ion-button expand="block" color="light" (click)="goToResetPassword()">Restablecer contraseña</ion-button>
+  <ion-button id="button" expand="block" color="light" (click)="goToResetPassword()">Restablecer contraseña</ion-button>
 
   
   <br> 
@@ -41,6 +44,6 @@
     <ion-label>¿No estás registrado?</ion-label>
   </div>
  
-  <ion-button expand="block" type="submit" (click)="goToRegister()">Crear cuenta</ion-button>
+  <ion-button id="button" expand="block" type="submit" (click)="goToRegister()">Crear cuenta</ion-button>
 
 </ion-content>
