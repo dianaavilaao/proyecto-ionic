@@ -10,6 +10,7 @@
 </ion-header>
 
 <ion-content>
+  
   <ion-card>
     <ion-card-header>
       <ion-card-title>¿En qué sede te encuentras?</ion-card-title>
@@ -39,7 +40,7 @@
           <ion-select-option value="puerto-montt">Sede Puerto Montt</ion-select-option>
       </ion-select>
     </ion-item>
-    <ion-button expand="block" (click)="aceptarSede()">Buscar<ion-icon name="search-outline"></ion-icon></ion-button>
+    <ion-button id="button" expand="block" (click)="aceptarSede()">Buscar<ion-icon name="search-outline"></ion-icon></ion-button>
   </ion-card>
 
   <ion-card *ngIf="serviciosFiltrados.length > 0">
@@ -58,7 +59,7 @@
             <p>Distancia máxima: {{ servicio.distanciaMaxima }} km</p>
             <p>Capacidad disponible: {{ servicio.capacidadDisponible }}</p>
           </ion-label>
-          <ion-button slot="end" (click)="tomarViaje(servicio)">Tomar viaje</ion-button>
+          <ion-button id="button" slot="end" (click)="tomarViaje(servicio)">Tomar viaje</ion-button>
         </ion-item>
       </ion-list>
     </ion-card-content>

@@ -151,6 +151,16 @@ export class SelectedServicePage implements AfterViewInit {
     toast.present();
   }
 
+  async showToast(mensaje: string, color: string) {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: 5000,
+      position: 'bottom',
+      color: color
+    });
+    toast.present();
+  }
+
   async aceptarViaje() {
     if (!this.servicioSeleccionado) {
       this.mostrarToast('No se encontró el servicio seleccionado.', 'danger');
@@ -169,7 +179,7 @@ export class SelectedServicePage implements AfterViewInit {
         // Actualizar el servicio en el almacenamiento
         await this.loginService.actualizarServicio(this.servicioSeleccionado);
   
-        this.mostrarToast('¡Viaje aceptado exitosamente!', 'success');
+        this.showToast('¡Ok! Ve a la pestaña "Inicio" y presiona "Aceptar viajes".', 'success');
       } else {
         this.mostrarToast('No hay asientos disponibles para este viaje.', 'danger');
       }

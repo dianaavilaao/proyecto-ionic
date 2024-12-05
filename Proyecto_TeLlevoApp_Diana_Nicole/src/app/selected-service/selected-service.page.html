@@ -17,13 +17,15 @@
   </ion-item>
   
   <!-- Botón para aceptar la dirección e iniciar la búsqueda de la ruta -->
-  <ion-button expand="block" (click)="aceptarDireccion()">Aceptar<ion-icon name="checkmark-outline"></ion-icon></ion-button>
+  <ion-button id="button" expand="block" (click)="aceptarDireccion()">Aceptar<ion-icon name="checkmark-outline"></ion-icon></ion-button>
   
   <!-- Mapa donde se mostrará la ruta -->
   <div #map id="map" style="height: 50vh; margin-top: 10px;"></div>
 
   <!-- Botón para aceptar el viaje -->
   <ion-button 
+  style="color: white;"
+  id="button"
   expand="block" 
   [disabled]="!puedeAceptarViaje" 
   [color]="puedeAceptarViaje ? 'primary' : 'medium'" 

@@ -11,7 +11,7 @@
 
 <ion-content class="ion-padding">
   
-  <ion-button expand="block" (click)="goToServiceStatus()">Revisar estado de servicios</ion-button>
+  <ion-button style="background: #3880ff; color: white;" expand="block" (click)="goToServiceStatus()">Revisar estado de servicios</ion-button>
 
     <ion-card *ngIf="vehiculo"> 
       <ion-card-header>
@@ -42,13 +42,13 @@
         </ion-item>
         
       </ion-card-content>
-      <ion-button id="open-edit-vehicle-modal" expand="block">Editar vehículo<ion-icon name="create-outline"></ion-icon></ion-button>
+      <ion-button style="background: #3880ff; color: white;" id="button" id="open-edit-vehicle-modal" expand="block">Editar vehículo<ion-icon name="create-outline"></ion-icon></ion-button>
   <ion-modal trigger="open-edit-vehicle-modal">
     <ng-template>
       <ion-header>
         <ion-toolbar>
           <ion-buttons slot="start">
-            <ion-button (click)="cancelEdit()">Cancelar<ion-icon name="close-outline"></ion-icon></ion-button>
+            <ion-button (click)="cancelEdit()">Cancelar</ion-button>
           </ion-buttons>
           <ion-title>Editar vehículo<ion-icon name="create-outline"></ion-icon></ion-title>
         </ion-toolbar>
@@ -87,7 +87,7 @@
         </ion-item>
 
 
-        <ion-button expand="block" (click)="confirmarEdicion()">Guardar cambios<ion-icon name="save-outline"></ion-icon></ion-button>
+        <ion-button style="background: #3880ff; color: white;" id="button" expand="block" (click)="confirmarEdicion()">Guardar cambios<ion-icon name="save-outline"></ion-icon></ion-button>
       </form>
       </ion-content>
     </ng-template>
@@ -102,7 +102,7 @@
       <ion-card-content>
         <p>Por favor, registra tu vehículo para verlo aquí y ofrecer viajes.</p>
       </ion-card-content>
-      <ion-button id="open-modal" expand="block">Agregar vehiculo <ion-icon name="add-outline"></ion-icon></ion-button>
+      <ion-button style="background: #3880ff; color: white;" id="button" id="open-modal" expand="block">Agregar vehiculo <ion-icon name="add-outline"></ion-icon></ion-button>
       <ion-modal trigger="open-modal">
         <ng-template>
           <ion-header>
@@ -167,7 +167,7 @@
                 ></ion-input>
               </ion-item>
           
-              <ion-button expand="block" type="submit">Agregar vehículo</ion-button>
+              <ion-button id="button" expand="block" type="submit">Agregar vehículo</ion-button>
             </form>
           </ion-content>
         </ng-template>
@@ -197,7 +197,7 @@
     </ion-item>
     
     <ion-item>
-      <ion-label>Selecciona una sede</ion-label>
+      <ion-label>Sede</ion-label>
       <ion-select [(ngModel)]="sedeSeleccionada" placeholder="Seleccione una sede">
           <ion-select-option value="alameda">Sede Alameda</ion-select-option>
           <ion-select-option value="padre-alonso">Sede Padre Alonso de Ovalle</ion-select-option>
@@ -227,7 +227,7 @@
     <ion-input [(ngModel)]="distanciaMaxima" type="number" placeholder="Ej: 5"></ion-input>
   </ion-item>
 
-  <ion-button expand="block" (click)="crearServicio()">Aceptar <ion-icon name="checkmark-outline"></ion-icon></ion-button>
+  <ion-button id="button" expand="block" (click)="crearServicio()">Aceptar <ion-icon name="checkmark-outline"></ion-icon></ion-button>
   
   </ion-card>
 

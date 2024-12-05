@@ -68,4 +68,6 @@ export class SearchServicesPage implements OnInit {
       queryParams: { servicio: JSON.stringify(servicio) }
     });
   }
+
+  
 }

@@ -134,5 +134,105 @@ ion-card-content {
   text-align: center;
 }
 
+//Colores y diseños
+
+/* Estilo global para centrar textos */
+.text-center {
+  text-align: center;
+}
+
+ion-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* Botones */
+:root {
+  /* Variables */
+  --button-primary-bg:  #3880ff;
+  --button-primary-color: #ffffff;
+  --button-secondary-color: #ffffff;
+  --button-radius: 12px;
+  --button-padding: 12px 20px;
+  --button-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  --button-hover-scale: 1.05;
+  
+}
+
+#button {
+  --background: var(--button-primary-bg);
+  --color: var(--button-primary-color);
+  border-radius: var(--button-radius);
+  padding: var(--button-padding);
+  font-weight: 400;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+
+#button:hover {
+  transform: scale(var(--button-hover-scale));
+}
+
+#button:active {
+  transform: scale(0.98);
+}
+
+/* Outline Style */
+#button.outline {
+  background: transparent;
+  border: 2px solid currentColor;
+  box-shadow: none;
+}
+
+/* Icon-Only Buttons */
+#button.icon-only {
+  --padding: 8px;
+  border-radius: 50%;
+  width: 40px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+#button.icon-only:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  transform: scale(1.1);
+}
+
+
+h3 {
+  font-size: 1.5rem;
+  margin-left: 15px;
+  margin-bottom: 20px;
+  text-align: center; 
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 

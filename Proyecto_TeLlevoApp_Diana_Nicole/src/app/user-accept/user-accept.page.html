@@ -21,6 +21,7 @@
         <p>Tiempo restante: {{ servicio.tiempoRestante | number:'1.0-0' }} minutos</p>
       </ion-label>
       <ion-button 
+        id="button"
         expand="block" 
         color="primary" 
         [disabled]="!puedeAceptarServicio(servicio)" 
