@@ -130,6 +130,7 @@
           </ion-content>
             </ng-template>
           </ion-modal>
+      
     </ion-card-content>
   
     <ion-card-content *ngIf="!vehiculo">
@@ -137,4 +138,6 @@
     </ion-card-content>
   </ion-card>
   
+  <ion-button id="button" expand="block" (click)="cerrarSesion()">Cerrar sesión <ion-icon name="exit-outline"></ion-icon></ion-button>
+
 </ion-content>

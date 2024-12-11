@@ -4,7 +4,8 @@ import { ModalController } from '@ionic/angular';
 import { LoginService } from '../services/login.service';
 import { User } from '../models/user';
 import { Vehiculo } from '../models/vehiculo';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
+import { Storage } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-profile',
@@ -20,11 +21,12 @@ export class ProfilePage implements OnInit {
   editingVehicle: Vehiculo = new Vehiculo('', '', '', '',4,0);
 
   constructor(
-    private navCtrl: NavController,
     private navController: NavController,
     private modalController: ModalController,
     private loginService: LoginService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private toastController: ToastController,
+    private storage: Storage,
   ) { }
 
   async ngOnInit() {
@@ -37,7 +39,11 @@ export class ProfilePage implements OnInit {
       //}
     }
   }
-
+  
+  async initStorage() {
+    await this.storage.create();
+  }
+  
   // Cargar los datos del usuario autenticado
   async cargarDatosUsuario() {
     this.usuario = await this.loginService.obtenerUsuarioAutenticado();
@@ -137,6 +143,45 @@ export class ProfilePage implements OnInit {
   dismissEditVehicleModal() {
     this.modal.dismiss(null, 'cancel');
   }
+
+  async mostrarMensajeToast(mensaje: string, color: string) {
+    const toast = await this.toastController.create({
+      duration: 3000,
+      message: mensaje,
+      position: 'bottom',
+      color: color,
+    });
+    toast.present();
+  }
+
+  async cerrarSesion() {
+    const alert = await this.alertController.create({
+      header: 'Cerrar sesión',
+      message: '¿Estás seguro de que quieres cerrar sesión?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Cerrar sesión',
+          role: 'destructive',
+          handler: async () => {
+            try {
+              await this.storage.remove('usuarioAutenticado');
+              await this.mostrarMensajeToast('Has cerrado sesión.', 'success');
+              this.navController.navigateRoot('/login');
+            } catch (error) {
+              console.error('Error al cerrar sesión:', error);
+            }
+          },
+        },
+      ],
+    });
+  
+    await alert.present();
+  }
+  
 
 
 
