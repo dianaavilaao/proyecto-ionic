@@ -117,6 +117,17 @@ export class OfferServicesPage implements OnInit {
       return;
     }
 
+    // Validación de la sede y la distancia máxima
+    if (!this.sedeSeleccionada || this.sedeSeleccionada === '') {
+      this.mostrarToast('Debe seleccionar una sede', 'danger');
+      return;
+    }
+
+    if (this.distanciaMaxima <= 0) {
+      this.mostrarToast('La distancia máxima debe ser mayor que 0', 'danger');
+      return;
+    }
+
     try {
       const nuevoServicio = new Service(
         Date.now(), // ID único
@@ -134,6 +145,7 @@ export class OfferServicesPage implements OnInit {
       console.error('Error al crear el servicio:', error);
     }
   }
+
 
   // Función para mostrar un mensaje de Toast
   async mostrarToast(mensaje: string, color: string) {
