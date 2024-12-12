@@ -5,7 +5,7 @@ import { AfterViewInit } from '@angular/core';
 import { AnimationController } from '@ionic/angular';
 import { User } from '../models/user';
 import { LoginService } from '../services/login.service';
-import { Router, NavigationEnd } from '@angular/router';
+
 
 @Component({
   selector: 'app-login',
@@ -24,23 +24,9 @@ export class LoginPage implements AfterViewInit {
     private storage: Storage,
     private loginService: LoginService,
     private alertController: AlertController,
-    private router: Router
   ) {
     this.initStorage();
   }
-
-  ngOnInit() {
-    // Detecta si la navegación hacia esta página es una acción de "hacia atrás"
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        // Verifica si la URL actual es '/login'
-        if (event.url === '/login' && window.history.state.navigationId > 1) {
-          this.isBackNavigation = true;
-        }
-      }
-    });
-  }
-
 
   // Inicializa el almacenamiento
   async initStorage() {
@@ -99,37 +85,5 @@ export class LoginPage implements AfterViewInit {
   goToResetPassword() {
     this.navCtrl.navigateForward('/reset-password');
   }
-
-  async ionViewWillEnter() {
-    if (this.isBackNavigation) {
-      console.log('ionViewWillEnter triggered due to back navigation');
-      const confirm = await this.showLogoutConfirmation();
-    }
-  }
-
-  async showLogoutConfirmation(): Promise<boolean> {
-    return new Promise(async (resolve) => {
-      const alert = await this.alertController.create({
-        header: 'Confirmar',
-        message: '¿Quieres cerrar sesión al volver al login?',
-        buttons: [
-          {
-            text: 'Cancelar',
-            role: 'cancel',
-            handler: () => {
-              this.navCtrl.navigateBack('/home'); 
-              resolve(false); 
-            },
-          },
-          {
-            text: 'Sí, cerrar sesión',
-            handler: () => resolve(true), 
-          },
-        ],
-      });
-      await alert.present();
-    });
-  }
-  
 
 }
